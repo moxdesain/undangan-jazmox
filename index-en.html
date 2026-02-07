@@ -1859,17 +1859,27 @@
 
             <!-- PayPal Info (Hidden Initially) -->
             <div id="bankInfo" class="bank-box">
-                <i class="fab fa-paypal" style="color: var(--accent); font-size: 2.5rem; margin-bottom: 15px;"></i>
+                <i class="fab fa-paypal" style="color: #003087; font-size: 2.5rem; margin-bottom: 15px;"></i>
                 <p
                     style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
                     Send Loot via PayPal</p>
-                <span class="rek-num" style="font-size: 1.6rem;">@moxsenna</span>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">moxsenna@gmail.com</p>
 
-                <button onclick="copyRek()" class="copy-btn">
+                <a href="https://www.paypal.com/paypalme/moxsenna" target="_blank" style="display: inline-block; margin: 20px 0; padding: 15px 40px; 
+                          background: linear-gradient(135deg, #003087, #009cde); 
+                          color: white; text-decoration: none; border-radius: 50px; 
+                          font-family: 'Cinzel', serif; font-weight: bold; letter-spacing: 2px;
+                          box-shadow: 0 10px 30px rgba(0, 48, 135, 0.4); 
+                          transition: all 0.3s ease;">
+                    <i class="fab fa-paypal" style="margin-right: 10px;"></i>PayPal.me/moxsenna
+                </a>
+
+                <p style="color: var(--text-muted); font-size: 0.85rem;">or send to: moxsenna@gmail.com</p>
+
+                <button onclick="copyRek()" class="copy-btn" style="margin-top: 15px;">
                     <i class="fas fa-copy"></i> Copy Email
                 </button>
             </div>
+
 
             <!-- Buttons Dynamic -->
             <div id="mButtons" class="btn-action-group"></div>
