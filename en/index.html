@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement: Jasmine & Bima (Bitter Joker & mOx)</title>
+
+    <!-- Fonts Premium -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Amiri:ital@0;1&family=Cinzel:wght@400;600&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Three.js for 3D Background -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <!-- GSAP Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            /* TEMA: MIDNIGHT BLUE & COPPER + RPG THEME */
+            --bg-color: #0F172A;
+            --card-bg: #1E293B;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --accent: #D4A373;
+            --accent-light: #F3D5B5;
+            --border: #334155;
+            /* RPG Colors */
+            --rpg-gold: #FFD700;
+            --rpg-health: #E74C3C;
+            --rpg-mana: #3498DB;
+            --rpg-xp: #2ECC71;
+            --rpg-panel: rgba(15, 23, 42, 0.95);
+            --rpg-border: linear-gradient(135deg, #FFD700, #D4A373, #FFD700);
+        }
+
+        /* ========================================= */
+        /* RPG LOADING SCREEN */
+        /* ========================================= */
+        #rpg-loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-color);
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .loading-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            color: var(--rpg-gold);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--rpg-gold);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--rpg-gold), #FFEC8B, var(--rpg-gold));
+            background-size: 200% 100%;
+            animation: loadingShimmer 1s linear infinite;
+            transition: width 0.3s ease;
+        }
+
+        @keyframes loadingShimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .press-start {
+            display: none;
+            margin-top: 40px;
+            padding: 15px 40px;
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: var(--bg-color);
+            background: var(--rpg-gold);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            animation: pulse 1.5s ease-in-out infinite;
+            transition: transform 0.2s;
+        }
+
+        .press-start:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        /* ========================================= */
+        /* RTS HUD (Resource Bar - Kingshot Style) */
+        /* ========================================= */
+        .rpg-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 15px;
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.7), transparent);
+            z-index: 9998;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            font-family: 'Cinzel', serif;
+            pointer-events: none;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .resource-icon {
+            font-size: 1rem;
+        }
+
+        .resource-value {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        .hud-left,
+        .hud-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hud-bar {
+            width: 120px;
+            height: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hud-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+        }
+
+        .hud-hp .hud-bar-fill {
+            background: var(--rpg-health);
+            width: 100%;
+        }
+
+        .hud-mp .hud-bar-fill {
+            background: var(--rpg-mana);
+            width: 80%;
+        }
+
+        .hud-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hud-level {
+            background: var(--rpg-gold);
+            color: var(--bg-color);
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* ========================================= */
+        /* CHARACTER STATS PANEL */
+        /* ========================================= */
+        .character-panel {
+            background: var(--rpg-panel);
+            border: 2px solid var(--rpg-gold);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px auto;
+            max-width: 500px;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .character-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .character-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: var(--rpg-gold);
+        }
+
+        .character-class {
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--rpg-gold);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: var(--rpg-gold);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-icon {
+            width: 35px;
+            height: 35px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid var(--rpg-gold);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-name {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--rpg-gold);
+        }
+
+        /* ========================================= */
+        /* QUEST LOG STYLE */
+        /* ========================================= */
+        .quest-panel {
+            background: var(--rpg-panel);
+            border: 2px solid var(--rpg-gold);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.15);
+        }
+
+        .quest-header {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quest-header i {
+            color: var(--rpg-gold);
+        }
+
+        .quest-header h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--rpg-gold);
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .quest-body {
+            padding: 25px;
+        }
+
+        .quest-objective {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .quest-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--rpg-gold);
+            border-radius: 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .quest-checkbox.completed {
+            background: var(--rpg-gold);
+            color: var(--bg-color);
+        }
+
+        .quest-text {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .quest-reward {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quest-reward-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .quest-reward-value {
+            color: var(--rpg-xp);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+        }
+
+        /* ========================================= */
+        /* SECRET QUEST (Hidden until scroll) */
+        /* ========================================= */
+        .secret-quest {
+            opacity: 0;
+            transform: translateY(80px) scale(0.9) rotateX(10deg);
+            transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            perspective: 1000px;
+        }
+
+        .secret-quest.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1) rotateX(0deg);
+            pointer-events: auto;
+        }
+
+        .secret-quest-container {
+            background: linear-gradient(145deg, rgba(20, 30, 48, 0.95), rgba(36, 59, 85, 0.9));
+            border: 2px solid transparent;
+            border-radius: 20px;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 215, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Animated glowing border */
+        .secret-quest-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg,
+                    #FFD700, #FF6B6B, #FFD700, #FF6B6B, #FFD700);
+            background-size: 400% 400%;
+            border-radius: 22px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        /* Floating particles inside */
+        .secret-quest-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(2px 2px at 20% 30%, rgba(255, 215, 0, 0.3), transparent),
+                radial-gradient(2px 2px at 40% 70%, rgba(255, 107, 107, 0.2), transparent),
+                radial-gradient(1px 1px at 60% 20%, rgba(255, 215, 0, 0.4), transparent),
+                radial-gradient(2px 2px at 80% 60%, rgba(255, 255, 255, 0.15), transparent),
+                radial-gradient(1px 1px at 10% 80%, rgba(255, 215, 0, 0.3), transparent),
+                radial-gradient(2px 2px at 90% 40%, rgba(255, 107, 107, 0.25), transparent);
+            animation: floatParticles 8s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatParticles {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .secret-quest-header {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .secret-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #FF416C, #FF4B2B);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: badgePulse 2s ease-in-out infinite, badgeFloat 3s ease-in-out infinite;
+            margin-bottom: 20px;
+            box-shadow:
+                0 10px 30px rgba(255, 75, 43, 0.4),
+                0 0 0 3px rgba(255, 75, 43, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secret-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: badgeShine 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 10px 30px rgba(255, 75, 43, 0.4), 0 0 0 3px rgba(255, 75, 43, 0.2);
+            }
+
+            50% {
+                box-shadow: 0 15px 50px rgba(255, 75, 43, 0.6), 0 0 0 6px rgba(255, 75, 43, 0.3);
+            }
+        }
+
+        @keyframes badgeFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes badgeShine {
+            0% {
+                left: -100%;
+            }
+
+            50%,
+            100% {
+                left: 100%;
+            }
+        }
+
+        .secret-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: goldShimmer 3s linear infinite;
+            margin-top: 15px;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        @keyframes goldShimmer {
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 200% center;
+            }
+        }
+
+        .secret-quest-body {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Staggered reveal for children */
+        .secret-quest.revealed .secret-badge {
+            animation: badgeReveal 0.6s ease-out forwards, badgePulse 2s ease-in-out 0.6s infinite, badgeFloat 3s ease-in-out 0.6s infinite;
+        }
+
+        .secret-quest.revealed .secret-title {
+            animation: titleReveal 0.8s ease-out 0.2s forwards, goldShimmer 3s linear 1s infinite;
+            opacity: 0;
+        }
+
+        .secret-quest.revealed .secret-quest-body {
+            animation: bodyReveal 1s ease-out 0.4s forwards;
+            opacity: 0;
+        }
+
+        @keyframes badgeReveal {
+            from {
+                transform: scale(0) rotate(-10deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes titleReveal {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bodyReveal {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Enhanced buttons inside secret quest */
+        .secret-quest .btn-gold {
+            background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+            transform: scale(1);
+            transition: all 0.3s ease;
+        }
+
+        .secret-quest .btn-gold:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.5);
+        }
+
+        /* ========================================= */
+        /* STRATEGIC MAP - Flight Path Animation */
+        /* ========================================= */
+        .strategic-map {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+            margin: 30px auto;
+            background:
+                linear-gradient(rgba(0, 50, 80, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 50, 80, 0.3) 1px, transparent 1px),
+                radial-gradient(ellipse at center, rgba(0, 100, 150, 0.15) 0%, transparent 70%);
+            background-size: 30px 30px, 30px 30px, 100% 100%;
+            border: 2px solid rgba(0, 200, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow:
+                0 0 30px rgba(0, 200, 255, 0.2),
+                inset 0 0 60px rgba(0, 50, 100, 0.3);
+        }
+
+        .strategic-map::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(0, 200, 255, 0.05) 50%, transparent 60%);
+            animation: mapScanline 4s linear infinite;
+        }
+
+        @keyframes mapScanline {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .map-label {
+            position: absolute;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .map-label.jakarta {
+            right: 8%;
+            bottom: 15%;
+            background: rgba(0, 200, 255, 0.2);
+            border: 1px solid rgba(0, 200, 255, 0.5);
+            color: #00D4FF;
+        }
+
+        .map-label.tehran {
+            left: 8%;
+            top: 15%;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            color: #FFD700;
+        }
+
+        .map-marker {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            z-index: 5;
+        }
+
+        .map-marker.jakarta {
+            right: 15%;
+            bottom: 20%;
+            background: #00D4FF;
+            box-shadow: 0 0 20px #00D4FF, 0 0 40px rgba(0, 212, 255, 0.5);
+            animation: markerPulse 2s ease-in-out infinite;
+        }
+
+        .map-marker.tehran {
+            left: 15%;
+            top: 20%;
+            background: #FFD700;
+            box-shadow: 0 0 20px #FFD700, 0 0 40px rgba(255, 215, 0, 0.5);
+            animation: markerPulse 2s ease-in-out infinite 0.5s;
+        }
+
+        @keyframes markerPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.3);
+                opacity: 0.8;
+            }
+        }
+
+        .flight-path-svg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .flight-line {
+            fill: none;
+            stroke: url(#flightGradient);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-dasharray: 300;
+            stroke-dashoffset: 300;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        .flight-line.animated {
+            animation: drawPath 3s ease-out forwards;
+        }
+
+        @keyframes drawPath {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .plane-icon {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #FFD700;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8));
+            opacity: 0;
+            z-index: 15;
+        }
+
+        .plane-icon.animated {
+            animation: flyPlane 3s ease-out forwards;
+        }
+
+        @keyframes flyPlane {
+            0% {
+                right: 18%;
+                bottom: 25%;
+                left: auto;
+                opacity: 1;
+                transform: rotate(-45deg) scaleX(-1);
+            }
+
+            100% {
+                right: auto;
+                left: 18%;
+                bottom: 60%;
+                opacity: 1;
+                transform: rotate(-45deg) scaleX(-1);
+            }
+        }
+
+        .distance-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: var(--rpg-gold);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .commander-card {
+            background: var(--rpg-panel);
+            border: 2px solid var(--rpg-gold);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .commander-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--rpg-gold), #FFE066);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .commander-info h4 {
+            font-family: 'Cinzel', serif;
+            color: var(--rpg-gold);
+            margin: 0 0 5px 0;
+        }
+
+        .commander-ign {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .commander-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+        }
+
+        .commander-stat {
+            font-size: 0.75rem;
+            color: var(--text-primary);
+            background: rgba(255, 215, 0, 0.1);
+            padding: 3px 10px;
+            border-radius: 10px;
+        }
+
+        /* --- CSS RESET & ISOLATION --- */
+        html,
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color) !important;
+            color: var(--text-primary) !important;
+            font-family: 'Lato', sans-serif !important;
+            overflow-x: hidden !important;
+            line-height: 1.8 !important;
+            position: relative;
+        }
+
+        /* THREE.JS CANVAS */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- AUDIO BUTTON --- */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            width: 55px;
+            height: 55px;
+            background: rgba(212, 163, 115, 0.15);
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 25px rgba(212, 163, 115, 0.3), inset 0 0 15px rgba(212, 163, 115, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px rgba(212, 163, 115, 0.5);
+        }
+
+        .music-control i {
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .music-rotate {
+            animation: spin 5s linear infinite;
+        }
+
+        /* --- 1. COVER / ENVELOPE --- */
+        #opener-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: transparent !important;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .ornament-box {
+            border: 1px solid rgba(212, 163, 115, 0.4);
+            padding: 60px 40px;
+            position: relative;
+            max-width: 420px;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.7) !important;
+            backdrop-filter: blur(20px);
+            border-radius: 4px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(212, 163, 115, 0.1);
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
+
+        .ornament-box:hover {
+            transform: rotateX(2deg) rotateY(-2deg) translateZ(10px);
+        }
+
+        .ornament-box::before,
+        .ornament-box::after {
+            content: "❖";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent);
+            background: rgba(15, 23, 42, 0.9);
+            padding: 0 15px;
+            font-size: 1.5rem;
+        }
+
+        .ornament-box::before {
+            top: -15px;
+        }
+
+        .ornament-box::after {
+            bottom: -15px;
+        }
+
+        .seal-btn {
+            margin-top: 50px;
+            background: linear-gradient(135deg, var(--accent), #E8C39E, var(--accent)) !important;
+            background-size: 200% 200%;
+            animation: shimmer 3s ease infinite;
+            color: #0F172A !important;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-family: 'Cinzel', serif !important;
+            font-weight: 700;
+            letter-spacing: 3px;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(212, 163, 115, 0.4), 0 0 60px rgba(212, 163, 115, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: none !important;
+            text-transform: uppercase;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .seal-btn:hover {
+            transform: scale(1.08) translateY(-5px) rotateX(5deg);
+            box-shadow: 0 20px 60px rgba(212, 163, 115, 0.5), 0 0 80px rgba(212, 163, 115, 0.3);
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* --- 2. MAIN CONTENT --- */
+        #main-content {
+            display: none;
+            opacity: 0;
+            padding-bottom: 150px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 0 30px;
+            perspective: 1000px;
+        }
+
+        /* Section Styling */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 100px 0;
+            position: relative;
+        }
+
+        /* DIVIDERS & ICONS */
+        .divider-icon {
+            font-size: 1.5rem;
+            color: var(--accent);
+            opacity: 0.7;
+            margin: 30px 0;
+            display: block;
+            text-align: center;
+        }
+
+        .divider-icon::before,
+        .divider-icon::after {
+            content: "";
+            display: inline-block;
+            width: 50px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            vertical-align: middle;
+            margin: 0 15px;
+            opacity: 0.7;
+        }
+
+        /* Typography */
+        .arabic {
+            font-family: 'Amiri', serif !important;
+            font-size: 2.4rem !important;
+            color: var(--accent) !important;
+            margin-bottom: 30px;
+            line-height: 2;
+            display: block;
+            text-shadow: 0 0 30px rgba(212, 163, 115, 0.3);
+        }
+
+        .title-names {
+            font-family: 'Cinzel', serif !important;
+            font-size: 3.8rem !important;
+            color: var(--accent) !important;
+            text-shadow: 0 0 40px rgba(212, 163, 115, 0.4), 0 0 80px rgba(212, 163, 115, 0.2);
+            margin: 20px 0;
+            line-height: 1.1 !important;
+            letter-spacing: 3px;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif !important;
+            font-size: 1.8rem !important;
+            color: var(--accent) !important;
+            border-bottom: 1px solid rgba(212, 163, 115, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            display: inline-block;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(212, 163, 115, 0.2);
+        }
+
+        .text-body {
+            font-size: 1.1rem !important;
+            color: var(--text-primary) !important;
+            margin-bottom: 20px;
+        }
+
+        .text-highlight {
+            color: var(--accent);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(212, 163, 115, 0.3);
+        }
+
+        .text-muted {
+            color: var(--text-secondary) !important;
+            font-size: 0.95rem !important;
+            font-style: italic;
+        }
+
+        /* 3D Card Style with Tilt Effect */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.6) !important;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(212, 163, 115, 0.25);
+            border-radius: 24px;
+            padding: 45px 35px;
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(212, 163, 115, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.6s ease;
+        }
+
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(212, 163, 115, 0.1) 0%, transparent 50%, rgba(212, 163, 115, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        .glass-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        /* Holographic shine effect */
+        .glass-card .shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(to bottom right,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0) 40%,
+                    rgba(255, 255, 255, 0.1) 50%,
+                    rgba(255, 255, 255, 0) 60%,
+                    rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glass-card:hover .shine {
+            opacity: 1;
+            animation: shineMove 1.5s ease-in-out;
+        }
+
+        @keyframes shineMove {
+            0% {
+                transform: rotate(30deg) translateX(-100%);
+            }
+
+            100% {
+                transform: rotate(30deg) translateX(100%);
+            }
+        }
+
+        /* Flight Animation - 3D Enhanced */
+        .flight-path {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 35px;
+            font-family: 'Cinzel', serif !important;
+            color: var(--text-primary) !important;
+            font-weight: 600;
+            margin: 40px 0;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            perspective: 500px;
+        }
+
+        .plane-anim {
+            animation: fly3d 3s ease-in-out infinite alternate;
+            font-size: 1.8rem;
+            filter: drop-shadow(0 0 10px rgba(212, 163, 115, 0.5));
+        }
+
+        @keyframes fly3d {
+            from {
+                transform: translateY(0) translateZ(0) rotate(-45deg);
+            }
+
+            to {
+                transform: translateY(-15px) translateZ(20px) rotate(-45deg);
+            }
+        }
+
+        /* Gift Button - 3D */
+        .btn-gold {
+            background: linear-gradient(135deg, #D4A373, #F3D5B5, #D4A373) !important;
+            background-size: 200% 200%;
+            animation: shimmer 3s ease infinite;
+            color: #0F172A !important;
+            border: none;
+            padding: 20px 35px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Cinzel', serif !important;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 30px rgba(212, 163, 115, 0.3), 0 0 20px rgba(212, 163, 115, 0.1);
+            transform-style: preserve-3d;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-5px) rotateX(10deg) scale(1.02);
+            box-shadow: 0 20px 50px rgba(212, 163, 115, 0.4), 0 0 40px rgba(212, 163, 115, 0.2);
+        }
+
+        /* MODAL POPUP - 3D Enhanced */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(2, 6, 23, 0.9) !important;
+            backdrop-filter: blur(15px);
+            z-index: 10000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            padding: 25px;
+            perspective: 1000px;
+        }
+
+        .modal-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.98)) !important;
+            width: 100%;
+            max-width: 440px;
+            padding: 45px 35px;
+            border-radius: 20px;
+            border: 1px solid rgba(212, 163, 115, 0.4);
+            text-align: center;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(212, 163, 115, 0.15);
+            transform-style: preserve-3d;
+            transform: rotateX(0deg);
+            transition: transform 0.5s ease;
+        }
+
+        .bank-box {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px dashed var(--accent);
+            padding: 28px;
+            border-radius: 14px;
+            margin-top: 25px;
+            display: none;
+            box-shadow: inset 0 0 30px rgba(212, 163, 115, 0.05);
+        }
+
+        .rek-num {
+            font-family: 'Courier New', monospace;
+            font-size: 2.2rem;
+            color: var(--accent) !important;
+            display: block;
+            margin: 18px 0;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(212, 163, 115, 0.4);
+        }
+
+        .btn-action-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-modal {
+            padding: 14px 22px;
+            border-radius: 10px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid var(--border) !important;
+            color: var(--text-secondary) !important;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-light)) !important;
+            color: #0F172A !important;
+            box-shadow: 0 5px 20px rgba(212, 163, 115, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(212, 163, 115, 0.5);
+        }
+
+        /* Copy button styling */
+        .copy-btn {
+            background: transparent;
+            border: 1px solid rgba(212, 163, 115, 0.5) !important;
+            color: var(--accent) !important;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(212, 163, 115, 0.1) !important;
+            box-shadow: 0 0 20px rgba(212, 163, 115, 0.2);
+        }
+
+        /* WA Link Styling */
+        .wa-link {
+            text-align: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            border: 1px solid var(--border);
+            padding: 18px;
+            border-radius: 14px;
+            transition: all 0.3s;
+            display: block;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .wa-link:hover {
+            border-color: #25D366;
+            background: rgba(37, 211, 102, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(212, 163, 115, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 20px rgba(212, 163, 115, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(212, 163, 115, 0);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* RESPONSIVE MOBILE FIX */
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 25px;
+            }
+
+            section {
+                padding: 80px 0 !important;
+                min-height: auto !important;
+            }
+
+            .title-names {
+                font-size: 2.6rem !important;
+            }
+
+            .arabic {
+                font-size: 1.7rem !important;
+            }
+
+            .section-title {
+                font-size: 1.4rem !important;
+            }
+
+            .glass-card {
+                padding: 35px 25px;
+            }
+
+            .ornament-box {
+                padding: 45px 30px;
+            }
+
+            .seal-btn {
+                padding: 18px 40px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Floating elements for depth */
+        .float-element {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .float-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(212, 163, 115, 0.08) 0%, transparent 70%);
+            top: 10%;
+            left: -100px;
+            animation: floatSlow 15s ease-in-out infinite alternate;
+        }
+
+        .float-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 163, 115, 0.06) 0%, transparent 70%);
+            bottom: 20%;
+            right: -50px;
+            animation: floatSlow 12s ease-in-out infinite alternate-reverse;
+        }
+
+        @keyframes floatSlow {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(30px, 30px) scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========================================= -->
+    <!-- RPG LOADING SCREEN -->
+    <!-- ========================================= -->
+    <div id="rpg-loading-screen">
+        <div class="loading-logo">⚔️ CO-OP QUEST ⚔️</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <p class="loading-text" id="loadingText">Connecting to server...</p>
+        <button class="press-start" id="pressStart" onclick="startGame()">▶ PRESS START</button>
+    </div>
+
+    <!-- ========================================= -->
+    <!-- RTS HUD (Kingshot Resource Bar) -->
+    <!-- ========================================= -->
+    <div class="rpg-hud" id="rpgHud">
+        <div class="resource-item">
+            <span class="resource-icon">🪙</span>
+            <span class="resource-value">∞</span>
+        </div>
+        <div class="resource-item">
+            <span class="resource-icon">🪵</span>
+            <span class="resource-value">999K</span>
+        </div>
+        <div class="resource-item">
+            <span class="resource-icon">🍖</span>
+            <span class="resource-value">MAX</span>
+        </div>
+        <div class="resource-item">
+            <span class="resource-icon">🪨</span>
+            <span class="resource-value">∞</span>
+        </div>
+        <div class="resource-item" style="border-color: rgba(212, 163, 115, 0.6);">
+            <span class="resource-icon">👑</span>
+            <span class="resource-value" style="color: var(--rpg-gold);">Alliance: 2</span>
+        </div>
+    </div>
+
+    <!-- THREE.JS CANVAS -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Floating ambient elements -->
+    <div class="float-element float-1"></div>
+    <div class="float-element float-2"></div>
+
+    <!-- AUDIO ELEMENT -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://res.cloudinary.com/dywjmxv05/video/upload/v1770448524/Soft_piano_intro_k6gvjn.mp3"
+            type="audio/mp3">
+    </audio>
+
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()">
+        <i class="fas fa-music"></i>
+    </div>
+
+    <!-- 1. OPENER LAYER -->
+    <div id="opener-layer">
+        <div class="ornament-box" id="envelope-box">
+            <h3
+                style="font-family: 'Cinzel'; letter-spacing: 5px; color: var(--text-secondary); font-size: 0.75rem; margin-bottom: 25px; text-transform: uppercase;">
+                The Wedding Announcement</h3>
+            <h1 class="title-names" style="font-size: 2.6rem !important; margin-bottom: 5px;">Jasmine & Bima</h1>
+            <p
+                style="color: var(--accent); font-family: 'Cinzel', serif; font-size: 0.9rem; margin-bottom: 20px; letter-spacing: 2px;">
+                (Bitter Joker & mOx)</p>
+            <div class="divider-icon" style="margin: 20px 0;"><i class="fas fa-star-of-life fa-xs"></i></div>
+            <p style="color: var(--text-secondary); font-size: 1rem;">To Our Dearest<br>Guild Mates & Friends</p>
+        </div>
+
+        <button class="seal-btn" onclick="openInvitation()" id="open-btn">
+            <i class="fas fa-envelope-open-text"></i> START GAME
+        </button>
+    </div>
+
+    <!-- 2. MAIN CONTENT -->
+    <div id="main-content">
+
+        <!-- HERO SECTION -->
+        <section class="container" style="text-align: center;">
+            <div class="anim-up">
+                <p class="arabic">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+                <p class="text-muted"
+                    style="text-transform: uppercase; letter-spacing: 4px; font-size: 0.8rem !important;">Requesting
+                    Wedding Buffs</p>
+
+                <h1 class="title-names" style="margin-top: 30px; margin-bottom: 5px;">Jasmine & Bima</h1>
+                <p
+                    style="color: var(--accent); font-family: 'Cinzel', serif; font-size: 1.1rem; margin-bottom: 30px; letter-spacing: 2px;">
+                    (Bitter Joker & mOx)</p>
+
+                <!-- STRATEGIC MAP - Flight Path Animation -->
+                <div class="strategic-map" id="strategicMap">
+                    <!-- SVG Flight Line -->
+                    <svg class="flight-path-svg" viewBox="0 0 500 200" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="flightGradient" x1="100%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00D4FF" />
+                                <stop offset="100%" style="stop-color:#FFD700" />
+                            </linearGradient>
+                        </defs>
+                        <path class="flight-line" id="flightLine" d="M 420,160 Q 250,80 80,40" />
+                    </svg>
+
+                    <!-- Markers -->
+                    <div class="map-marker jakarta"></div>
+                    <div class="map-marker tehran"></div>
+
+                    <!-- Labels -->
+                    <span class="map-label jakarta">🏠 Jakarta</span>
+                    <span class="map-label tehran">🎯 Tehran</span>
+
+                    <!-- Plane Icon -->
+                    <i class="fas fa-fighter-jet plane-icon" id="planeIcon"></i>
+
+                    <!-- Distance Badge -->
+                    <div class="distance-badge">📡 7,500+ KM</div>
+                </div>
+
+                <div class="divider-icon"><i class="fas fa-heart"></i></div>
+
+                <!-- CHARACTER STATS PANELS -->
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 30px;">
+                    <!-- Jasmine Stats -->
+                    <div class="character-panel" style="flex: 1; min-width: 280px;">
+                        <div class="character-header">
+                            <span class="character-name">👑 Jasmine</span>
+                            <span class="character-class">Commander</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 15px;">IGN: Bitter
+                            Joker</div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">💖</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Love</div>
+                                    <div class="stat-value">∞</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🧠</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">INT</div>
+                                    <div class="stat-value">99+</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">✨</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Charm</div>
+                                    <div class="stat-value">MAX</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">💻</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Tech</div>
+                                    <div class="stat-value">99+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bima Stats -->
+                    <div class="character-panel" style="flex: 1; min-width: 280px;">
+                        <div class="character-header">
+                            <span class="character-name">🎖️ Bima</span>
+                            <span class="character-class">Commander</span>
+                        </div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 15px;">IGN: mOx
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-icon">💖</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Love</div>
+                                    <div class="stat-value">∞</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">�️</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Strategy</div>
+                                    <div class="stat-value">S++</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🎮</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Gaming</div>
+                                    <div class="stat-value">MAX</div>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-icon">🍀</div>
+                                <div class="stat-info">
+                                    <div class="stat-name">Luck</div>
+                                    <div class="stat-value">SSS</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-body" style="max-width: 500px; margin: 30px auto 0; font-style: italic;">
+                    "And of His signs is that He created for you from yourselves mates that you may find tranquility in
+                    them."
+                </p>
+                <p class="text-muted" style="margin-top: 10px;">(QS. Adz-Dzariyat: 49)</p>
+            </div>
+        </section>
+
+        <!-- QUEST LOG: MAIN QUEST -->
+        <section class="container">
+            <div class="quest-panel anim-up">
+                <div class="quest-header">
+                    <i class="fas fa-scroll"></i>
+                    <h3>🎯 Main Quest: The Wedding</h3>
+                </div>
+                <div class="quest-body">
+                    <p class="text-body" style="margin-bottom: 20px;">
+                        Hello Gamers & Friends! Glory to God who matched us in this sacred bond. We are pleased to
+                        announce our new co-op campaign:
+                    </p>
+
+                    <div class="quest-objective">
+                        <div class="quest-checkbox completed"><i class="fas fa-check" style="font-size: 0.7rem;"></i>
+                        </div>
+                        <div class="quest-text">Find your soulmate (Player 2 acquired)</div>
+                    </div>
+                    <div class="quest-objective">
+                        <div class="quest-checkbox completed"><i class="fas fa-check" style="font-size: 0.7rem;"></i>
+                        </div>
+                        <div class="quest-text">Convince both families (Reputation MAX)</div>
+                    </div>
+                    <div class="quest-objective">
+                        <div class="quest-checkbox"><i class="fas fa-spinner"
+                                style="font-size: 0.7rem; color: var(--rpg-gold); animation: spin 2s linear infinite;"></i>
+                        </div>
+                        <div class="quest-text"><strong>Travel to Tehran, Iran</strong> for the ceremony</div>
+                    </div>
+                    <div class="quest-objective">
+                        <div class="quest-checkbox"></div>
+                        <div class="quest-text">Complete the wedding ceremony</div>
+                    </div>
+                    <div class="quest-objective">
+                        <div class="quest-checkbox"></div>
+                        <div class="quest-text">Begin the "Happily Ever After" expansion</div>
+                    </div>
+
+                    <div class="quest-reward">
+                        <span class="quest-reward-label">Reward:</span>
+                        <span class="quest-reward-value">+∞ Happiness XP | Legendary Title: "Married"</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JARAK & DOA (Poetic Filler) -->
+        <section class="container" style="text-align: center;">
+            <div class="anim-up">
+                <div class="divider-icon"><i class="fas fa-moon"></i></div>
+                <h2 style="font-family: 'Cinzel'; color: var(--text-primary); font-size: 1.6rem; letter-spacing: 2px;">
+                    Distance is Just High Ping</h2>
+                <p class="text-body"
+                    style="max-width: 520px; margin: 25px auto; color: var(--text-secondary) !important;">
+                    Even though thousands of kilometers separate Jakarta and Tehran, your sincere prayers transcend all
+                    servers and regions, lighting up our new journey.
+                </p>
+                <div class="divider-icon"><i class="fas fa-star"></i></div>
+            </div>
+        </section>
+
+        <!-- DISCLAIMER (INTI PESAN) -->
+        <section class="container">
+            <div class="glass-card anim-up" data-tilt style="border-color: rgba(212, 163, 115, 0.5);">
+                <div class="shine"></div>
+                <div style="font-size: 4rem; margin-bottom: 25px; line-height: 1;">🤲🏽</div>
+
+                <h2 class="section-title">Request for Support Buffs</h2>
+
+                <p class="text-body">
+                    Given the massive map size (> 7,500 KM) and complex travel logistics...
+                </p>
+
+                <div
+                    style="border: 1px solid rgba(212, 163, 115, 0.5); padding: 25px; border-radius: 14px; margin: 28px 0; background: rgba(212, 163, 115, 0.05);">
+                    <p style="font-weight: bold; color: var(--accent); font-size: 1.1rem; line-height: 1.6;">
+                        We strictly DO NOT expect your physical presence or loot drops (gifts).
+                    </p>
+                </div>
+
+                <p class="text-body">
+                    Your prayers for our household to be blessed with <span class="text-highlight">Love and
+                        Tranquility</span> are the most Legendary items we could ask for.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECRET QUEST (Hidden until scroll to bottom) -->
+        <section class="container" style="justify-content: flex-start;">
+            <div class="secret-quest" id="secretQuest">
+                <div class="secret-quest-container">
+                    <div class="secret-quest-header">
+                        <span class="secret-badge">🔓 Secret Quest Unlocked!</span>
+                        <h2 class="secret-title">Alliance Support (Optional)</h2>
+                    </div>
+
+                    <div class="secret-quest-body">
+                        <p class="text-body" style="text-align: center; margin-bottom: 30px;">
+                            You've discovered a hidden quest! While prayers are our main resource, if you wish to send
+                            some gold
+                            or materials to support our new base...
+                        </p>
+
+                        <div
+                            style="display: flex; flex-direction: column; gap: 20px; max-width: 420px; margin: 0 auto;">
+                            <button class="btn-gold" onclick="startGiftSequence()">
+                                <i class="fas fa-gift" style="margin-right: 10px;"></i> Send Resources
+                            </button>
+
+                            <div
+                                style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 10px;">
+                                <span
+                                    style="height: 1px; width: 40px; background: linear-gradient(90deg, transparent, var(--text-secondary)); opacity: 0.3;"></span>
+                                <span
+                                    style="color: var(--text-secondary); font-size: 0.8rem; letter-spacing: 2px;">OR</span>
+                                <span
+                                    style="height: 1px; width: 40px; background: linear-gradient(90deg, var(--text-secondary), transparent); opacity: 0.3;"></span>
+                            </div>
+
+                            <a href="https://t.me/Justmox" target="_blank" class="wa-link"
+                                style="border-color: #0088cc; color: #0088cc;">
+                                <i class="fab fa-telegram-plane" style="margin-right: 8px;"></i> Send 'GGWP' via
+                                Telegram
+                            </a>
+
+                            <div class="wa-link"
+                                style="margin-top: 15px; cursor: default; border-color: #5865F2; color: #5865F2;">
+                                <i class="fab fa-discord" style="margin-right: 8px;"></i> Discord:
+                                <strong>@mox_is_awesome</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer style="margin-top: 120px; text-align: center; opacity: 0.5; font-size: 0.85rem;">
+                <p style="letter-spacing: 3px; font-family: 'Cinzel', serif;">JASMINE & BIMA</p>
+                <p style="font-size: 0.75rem; letter-spacing: 1px; color: var(--accent); margin-top: 5px;">(Bitter Joker
+                    & mOx)</p>
+                <p style="font-size: 0.75rem; margin-top: 8px;">Jakarta – Tehran 2026</p>
+            </footer>
+        </section>
+
+    </div>
+
+    <!-- MODAL POPUP LOGIC -->
+    <div class="modal-overlay" id="giftModal">
+        <div class="modal-box" id="modal-content">
+            <h3 id="mTitle"
+                style="font-family: 'Cinzel'; color: var(--accent); margin-bottom: 22px; font-size: 1.5rem;">Title</h3>
+            <p id="mText" style="color: var(--text-primary); margin-bottom: 25px; font-size: 1rem; line-height: 1.7;">
+                Text</p>
+
+            <!-- PayPal Info (Hidden Initially) -->
+            <div id="bankInfo" class="bank-box">
+                <i class="fab fa-paypal" style="color: var(--accent); font-size: 2.5rem; margin-bottom: 15px;"></i>
+                <p
+                    style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
+                    Send Loot via PayPal</p>
+                <span class="rek-num" style="font-size: 1.6rem;">@moxsenna</span>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">moxsenna@gmail.com</p>
+
+                <button onclick="copyRek()" class="copy-btn">
+                    <i class="fas fa-copy"></i> Copy Email
+                </button>
+            </div>
+
+            <!-- Buttons Dynamic -->
+            <div id="mButtons" class="btn-action-group"></div>
+
+            <!-- Tombol WA Konfirmasi (Hidden Initially) -->
+            <!-- Contact Options (Hidden Initially) -->
+            <div id="contactOptions"
+                style="display: none; flex-direction: column; gap: 10px; margin-top: 20px; width: 100%;">
+                <a href="https://t.me/Justmox" target="_blank" class="btn-gold"
+                    style="text-decoration: none; font-size: 0.95rem; display: flex; justify-content: center; align-items: center; background: #0088cc !important; color: white !important;">
+                    <i class="fab fa-telegram-plane" style="margin-right: 8px;"></i> Confirm via Telegram
+                </a>
+                <div class="btn-gold"
+                    style="font-size: 0.95rem; display: flex; justify-content: center; align-items: center; background: #5865F2 !important; color: white !important; cursor: default;">
+                    <i class="fab fa-discord" style="margin-right: 8px;"></i> Discord: @mox_is_awesome
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================
+        // RPG LOADING SCREEN LOGIC
+        // =============================================
+        const loadingBar = document.getElementById('loadingBar');
+        const loadingText = document.getElementById('loadingText');
+        const pressStart = document.getElementById('pressStart');
+        const loadingScreen = document.getElementById('rpg-loading-screen');
+        const rpgHud = document.getElementById('rpgHud');
+
+        const loadingMessages = [
+            "Connecting to server...",
+            "Loading textures...",
+            "Initializing party members...",
+            "Loading quest data...",
+            "Syncing love buffs...",
+            "Preparing ceremony assets...",
+            "Almost ready..."
+        ];
+
+        let loadProgress = 0;
+        let msgIndex = 0;
+
+        function simulateLoading() {
+            const interval = setInterval(() => {
+                loadProgress += Math.random() * 15;
+                if (loadProgress >= 100) {
+                    loadProgress = 100;
+                    loadingBar.style.width = '100%';
+                    loadingText.textContent = "Ready!";
+                    pressStart.style.display = 'block';
+                    clearInterval(interval);
+                } else {
+                    loadingBar.style.width = loadProgress + '%';
+                    if (loadProgress > (msgIndex + 1) * 14) {
+                        msgIndex = Math.min(msgIndex + 1, loadingMessages.length - 1);
+                        loadingText.textContent = loadingMessages[msgIndex];
+                    }
+                }
+            }, 200);
+        }
+
+        function startGame() {
+            // Fade out loading screen
+            gsap.to(loadingScreen, {
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => {
+                    loadingScreen.style.display = 'none';
+                    // Show HUD
+                    rpgHud.style.display = 'flex';
+                    gsap.fromTo(rpgHud, { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5 });
+                    // Now trigger the original opener
+                    document.getElementById('opener-layer').style.display = 'flex';
+                }
+            });
+        }
+
+        // Auto-start loading simulation when page loads
+        window.addEventListener('load', () => {
+            document.getElementById('opener-layer').style.display = 'none';
+            simulateLoading();
+        });
+
+        // =============================================
+        // SECRET QUEST SCROLL REVEAL
+        // =============================================
+        function initSecretQuestReveal() {
+            const secretQuest = document.getElementById('secretQuest');
+            if (secretQuest) {
+                ScrollTrigger.create({
+                    trigger: secretQuest,
+                    start: "top 90%",
+                    onEnter: () => {
+                        secretQuest.classList.add('revealed');
+                    }
+                });
+            }
+        }
+
+        // =============================================
+        // STRATEGIC MAP - Flight Path Animation
+        // =============================================
+        function initFlightAnimation() {
+            const strategicMap = document.getElementById('strategicMap');
+            const flightLine = document.getElementById('flightLine');
+            const planeIcon = document.getElementById('planeIcon');
+
+            if (strategicMap && flightLine && planeIcon) {
+                ScrollTrigger.create({
+                    trigger: strategicMap,
+                    start: "top 80%",
+                    onEnter: () => {
+                        flightLine.classList.add('animated');
+                        planeIcon.classList.add('animated');
+                    }
+                });
+            }
+        }
+
+        // =============================================
+        // THREE.JS - 3D PARTICLE UNIVERSE BACKGROUND
+        // =============================================
+        let scene, camera, renderer, particles, mouseX = 0, mouseY = 0;
+        const particleCount = 2000;
+
+        function initThree() {
+            const canvas = document.getElementById('three-canvas');
+
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+            // Particles
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const sizes = new Float32Array(particleCount);
+
+            const color1 = new THREE.Color(0xD4A373); // Accent copper
+            const color2 = new THREE.Color(0xF1F5F9); // White-ish
+            const color3 = new THREE.Color(0x94A3B8); // Secondary gray
+
+            for (let i = 0; i < particleCount; i++) {
+                // Random sphere distribution
+                const radius = 80 + Math.random() * 120;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.acos((Math.random() * 2) - 1);
+
+                positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+                positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+                positions[i * 3 + 2] = radius * Math.cos(phi);
+
+                // Random color between the three
+                const colorChoice = Math.random();
+                let chosenColor;
+                if (colorChoice < 0.4) chosenColor = color1;
+                else if (colorChoice < 0.7) chosenColor = color2;
+                else chosenColor = color3;
+
+                colors[i * 3] = chosenColor.r;
+                colors[i * 3 + 1] = chosenColor.g;
+                colors[i * 3 + 2] = chosenColor.b;
+
+                sizes[i] = Math.random() * 2 + 0.5;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+            geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+            // Custom Shader Material for glowing particles
+            const material = new THREE.PointsMaterial({
+                size: 1.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8,
+                blending: THREE.AdditiveBlending,
+                sizeAttenuation: true
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            // Add ambient light for depth perception
+            const ambientLight = new THREE.AmbientLight(0xD4A373, 0.1);
+            scene.add(ambientLight);
+
+            // Event Listeners
+            window.addEventListener('resize', onWindowResize);
+            document.addEventListener('mousemove', onMouseMove);
+
+            animate();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.0003;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.0003;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Slow rotation - Elderly Friendly (Very Slow & Calm)
+            particles.rotation.y += 0.00008;
+            particles.rotation.x += 0.00004;
+
+            // Mouse influence - Drastically reduced for anti-dizziness
+            particles.rotation.y += mouseX * 0.002;
+            particles.rotation.x += mouseY * 0.002;
+
+            // Slight pulsing effect - Slower breathing
+            const time = Date.now() * 0.0002;
+            particles.material.opacity = 0.5 + Math.sin(time) * 0.1;
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize Three.js on load
+        document.addEventListener('DOMContentLoaded', initThree);
+
+        // =============================================
+        // 3D TILT EFFECT FOR CARDS
+        // =============================================
+        function initTiltEffect() {
+            const cards = document.querySelectorAll('[data-tilt]');
+
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+
+                    const rotateX = (y - centerY) / 15;
+                    const rotateY = (centerX - x) / 15;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                    card.style.boxShadow = `
+                        ${rotateY * -2}px ${rotateX * 2}px 40px rgba(0,0,0,0.4),
+                        0 0 60px rgba(212, 163, 115, 0.15)
+                    `;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                    card.style.boxShadow = '0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(212, 163, 115, 0.08)';
+                });
+            });
+        }
+
+        // =============================================
+        // OPENING LOGIC WITH 3D EFFECTS
+        // =============================================
+        function openInvitation() {
+            const tl = gsap.timeline();
+            const music = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('musicBtn');
+            const envelope = document.getElementById('envelope-box');
+            const openBtn = document.getElementById('open-btn');
+
+            // Play Music
+            if (music) {
+                music.volume = 0.6;
+                var playPromise = music.play();
+
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {
+                        musicBtn.style.display = 'flex';
+                        musicBtn.classList.add('music-rotate');
+                    })
+                        .catch(error => {
+                            console.log("Auto-play prevented.");
+                            musicBtn.style.display = 'flex';
+                        });
+                }
+            }
+
+            // 3D Opening Animation
+            tl.to(openBtn, {
+                scale: 0.9,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.in"
+            })
+                .to(envelope, {
+                    rotateX: -90,
+                    opacity: 0,
+                    y: -100,
+                    duration: 1,
+                    ease: "power3.inOut"
+                }, "-=0.1")
+                .to("#opener-layer", {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        document.getElementById('opener-layer').style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                        document.body.style.overflowX = 'hidden';
+                    }
+                }, "-=0.5");
+
+            // Show Main Content
+            document.getElementById('main-content').style.display = 'block';
+            tl.to("#main-content", { opacity: 1, duration: 1.2 }, "-=0.8");
+
+            // Init scroll and tilt after content shows
+            setTimeout(() => {
+                initScrollAnimations();
+                initTiltEffect();
+                initSecretQuestReveal();
+                initFlightAnimation();
+            }, 500);
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const btn = document.getElementById('musicBtn');
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = '<i class="fas fa-music"></i>';
+                btn.classList.add('music-rotate');
+            } else {
+                music.pause();
+                btn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                btn.classList.remove('music-rotate');
+            }
+        }
+
+        // =============================================
+        // SCROLL ANIMATION WITH 3D TRANSFORMS
+        // =============================================
+        function initScrollAnimations() {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.utils.toArray('.anim-up').forEach((element, i) => {
+                gsap.from(element, {
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 88%",
+                        end: "top 60%",
+                        toggleActions: "play none none reverse"
+                    },
+                    y: 80,
+                    rotateX: 15,
+                    opacity: 0,
+                    duration: 1.4,
+                    ease: "power3.out",
+                    transformOrigin: "center bottom",
+                    delay: i * 0.05
+                });
+            });
+
+            // Parallax effect on scroll
+            gsap.to(particles ? particles.rotation : {}, {
+                scrollTrigger: {
+                    trigger: "#main-content",
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1
+                },
+                y: Math.PI * 0.5
+            });
+        }
+
+        // =============================================
+        // GIFT MODAL LOGIC WITH 3D ANIMATIONS
+        // =============================================
+        const modal = document.getElementById('giftModal');
+        const modalContent = document.getElementById('modal-content');
+        const mTitle = document.getElementById('mTitle');
+        const mText = document.getElementById('mText');
+        const mButtons = document.getElementById('mButtons');
+        const bankInfo = document.getElementById('bankInfo');
+
+        let step = 0;
+
+        function startGiftSequence() {
+            step = 1;
+            renderModal();
+            modal.style.display = 'flex';
+            gsap.fromTo(modal,
+                { opacity: 0 },
+                { opacity: 1, duration: 0.4, ease: "power2.out" }
+            );
+            gsap.fromTo(modalContent,
+                { rotateX: -30, y: 50, opacity: 0 },
+                { rotateX: 0, y: 0, opacity: 1, duration: 0.6, ease: "back.out(1.7)", delay: 0.1 }
+            );
+        }
+
+        function closeModal() {
+            gsap.to(modalContent, {
+                rotateX: 15,
+                y: 30,
+                opacity: 0,
+                duration: 0.3,
+                ease: "power2.in"
+            });
+            gsap.to(modal, {
+                opacity: 0,
+                duration: 0.4,
+                delay: 0.1,
+                onComplete: () => {
+                    modal.style.display = "none";
+                    step = 0;
+                }
+            });
+        }
+
+        function nextStep() {
+            // Animate content change
+            gsap.to(modalContent, {
+                rotateY: 5,
+                scale: 0.95,
+                opacity: 0,
+                duration: 0.25,
+                ease: "power2.in",
+                onComplete: () => {
+                    step++;
+                    renderModal();
+                    gsap.to(modalContent, {
+                        rotateY: 0,
+                        scale: 1,
+                        opacity: 1,
+                        duration: 0.25,
+                        ease: "power2.out"
+                    });
+                }
+            });
+        }
+
+        function renderModal() {
+            mButtons.innerHTML = '';
+            bankInfo.style.display = 'none';
+            contactOptions.style.display = 'none';
+
+            if (step === 1) {
+                mTitle.innerText = "Hold Up! ✋";
+                mText.innerText = "Guys, we're serious. Your prayers are the best loot. No need to farm gold for us.";
+                createBtn("Understood, GLHF!", "closeModal()", "btn-secondary");
+                createBtn("I Insist (Take my Gold!)", "nextStep()", "btn-primary");
+            }
+            else if (step === 2) {
+                mTitle.innerText = "Are you sure?";
+                mText.innerText = "Better save that gold for your own upgrades or skins. We really mean it!";
+                createBtn("Okay, I'll save it", "closeModal()", "btn-secondary");
+                createBtn("Shut up and take it!", "nextStep()", "btn-primary");
+            }
+            else if (step === 3) {
+                mTitle.innerText = "Achievement Unlocked: Generosity";
+                mText.innerText = "Wow... If you truly insist on supporting our server maintenance in Iran, may you be blessed with unlimited RNG luck!";
+
+                bankInfo.style.display = 'block';
+                contactOptions.style.display = 'flex';
+
+                createBtn("Close Quest", "closeModal()", "btn-secondary");
+            }
+        }
+
+        function createBtn(text, action, className) {
+            const btn = document.createElement('button');
+            btn.innerText = text;
+            btn.setAttribute('onclick', action);
+            btn.className = `btn-modal ${className}`;
+            mButtons.appendChild(btn);
+        }
+
+        function copyRek() {
+            navigator.clipboard.writeText("moxsenna@gmail.com").then(() => {
+                // Visual feedback
+                const btn = event.target.closest('button');
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                btn.style.borderColor = '#25D366';
+                btn.style.color = '#25D366';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalHTML;
+                    btn.style.borderColor = '';
+                    btn.style.color = '';
+                }, 2000);
+            });
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+    </script>
+</body>
+
+</html>

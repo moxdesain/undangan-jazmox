@@ -1,0 +1,21 @@
+
+# System files
+.DS_Store
+Thumbs.db
+*.log
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+
+# Environment variables
+.env
+
+# Antigravity/Agent artifacts (optional, but good to keep repo clean)
+task.md
+implementation_plan.md
+walkthrough.md
+deployment_guide.md
+implementation_plan_deployment.md
+brain/
