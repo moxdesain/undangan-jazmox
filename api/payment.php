@@ -25,9 +25,9 @@ $merchantCode = 'DS19425'; // Your Merchant Code from Duitku Dashboard
 $apiKey = '7ff078496ed0cf894f2a7f4b92fed59'; // Your API Key from Duitku Dashboard
 
 // Environment URLs
-$sandbox = false; // Set to false for production
-$baseUrl = $sandbox 
-    ? 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry' 
+$sandbox = true; // Set to true for Sandbox (Test Mode), false for Production
+$baseUrl = $sandbox
+    ? 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'
     : 'https://passport.duitku.com/webapi/api/merchant/v2/inquiry';
 
 // =============================================
@@ -108,7 +108,7 @@ curl_close($ch);
 if ($curlError) {
     http_response_code(500);
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'message' => 'Connection error: ' . $curlError
     ]);
     exit();
@@ -126,7 +126,8 @@ if ($httpCode === 200 && isset($result['paymentUrl'])) {
         'merchantOrderId' => $merchantOrderId,
         'amount' => $amount
     ]);
-} else {
+}
+else {
     // Error from Duitku
     http_response_code(400);
     echo json_encode([
