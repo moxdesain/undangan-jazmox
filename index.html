@@ -926,6 +926,15 @@
                         via WA
                     </a>
                 </div>
+
+                <!-- LIVE DONATION FEED (New Feature) -->
+                <div id="donation-feed" style="margin-top: 40px; display: none;">
+                    <h4 style="font-size: 0.9rem; color: var(--accent); margin-bottom: 15px; letter-spacing: 1px;">
+                        TERIMA KASIH KEPADA:</h4>
+                    <div id="donor-list" style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                        <!-- JS injected items -->
+                    </div>
+                </div>
             </div>
 
             <footer style="margin-top: 120px; text-align: center; opacity: 0.5; font-size: 0.85rem;">
@@ -1434,6 +1443,57 @@
                 payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Bayar Sekarang';
             }
         }
+
+        // =============================================
+        // DONATION FEED LOGIC
+        // =============================================
+        async function fetchDonations() {
+            try {
+                const response = await fetch('api/get_donations.php');
+                const data = await response.json();
+
+                if (data.donations && data.donations.length > 0) {
+                    const list = document.getElementById('donor-list');
+                    const feed = document.getElementById('donation-feed');
+                    list.innerHTML = ''; // Clear prev content
+                    feed.style.display = 'block';
+
+                    data.donations.forEach(d => {
+                        const item = document.createElement('div');
+                        item.className = 'donor-item';
+                        item.style.cssText = `
+                            background: rgba(255, 255, 255, 0.03);
+                            padding: 10px 20px;
+                            border-radius: 20px;
+                            border: 1px solid rgba(212, 163, 115, 0.2);
+                            font-size: 0.85rem;
+                            color: var(--text-secondary);
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            animation: fadeIn 0.5s ease;
+                        `;
+                        // Format Name to Privacy (Bima P***) or Full Name
+                        const displayName = d.sender_name.length > 15 ? d.sender_name.substring(0, 12) + "..." : d.sender_name;
+
+                        item.innerHTML = `
+                            <i class="fas fa-heart" style="color: var(--accent); font-size: 0.7rem;"></i>
+                            <span>${displayName}</span>
+                            <span style="opacity: 0.5;">•</span>
+                            <span style="color: var(--text-primary);">Rp ${parseInt(d.amount).toLocaleString('id-ID')}</span>
+                        `;
+                        list.appendChild(item);
+                    });
+                }
+            } catch (e) {
+                console.log("No donations yet or error fetching.");
+            }
+        }
+
+        // Auto refresh every 30 seconds
+        setInterval(fetchDonations, 30000);
+        // Initial fetch
+        fetchDonations();
 
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();

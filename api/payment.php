@@ -60,6 +60,32 @@ if ($amount < 10000) {
 // Generate unique order ID
 $merchantOrderId = 'GIFT-' . time() . '-' . rand(1000, 9999);
 
+// Database Initialization (Create if not exists)
+$dbFile = __DIR__ . '/../donations.db';
+$db = new PDO('sqlite:' . $dbFile);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Create table if not exists (Only during first run)
+$db->exec("CREATE TABLE IF NOT EXISTS donations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    orderId TEXT UNIQUE,
+    amount INTEGER,
+    sender_name TEXT,
+    message TEXT,
+    status TEXT DEFAULT 'PENDING',
+    payment_url TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+)");
+
+// Insert Pending Transaction
+$stmt = $db->prepare("INSERT INTO donations (orderId, amount, sender_name, message, status) VALUES (:orderId, :amount, :name, :message, 'PENDING')");
+$stmt->execute([
+    ':orderId' => $merchantOrderId,
+    ':amount' => $amount,
+    ':name' => $input['name'] ?? 'Hamba Allah',
+    ':message' => $input['message'] ?? 'Selamat Menempuh Hidup Baru!'
+]);
+
 // Payment details
 $productDetails = 'Tanda Kasih Pernikahan Bima & Jasmine';
 $email = 'guest@wedding.com'; // Default email for guests
