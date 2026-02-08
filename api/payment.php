@@ -21,11 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // =============================================
 // DUITKU CONFIGURATION - UPDATE THESE VALUES
 // =============================================
-$merchantCode = 'DS19425'; // Your Merchant Code from Duitku Dashboard
-$apiKey = '7ff078496ed0cf894f2a7f4b92fed59'; // Your API Key from Duitku Dashboard
+$merchantCode = 'D12441'; // Production Merchant Code
+$apiKey = '7ff078496ed0cf894f2a7f4fb92fed59'; // Production API Key
 
 // Environment URLs
-$sandbox = true; // Set to true for Sandbox (Test Mode), false for Production
+$sandbox = false; // Set to false for Production (Live Mode)
 $baseUrl = $sandbox
     ? 'https://sandbox.duitku.com/webapi/api/merchant/v2/inquiry'
     : 'https://passport.duitku.com/webapi/api/merchant/v2/inquiry';
