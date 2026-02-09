@@ -1708,12 +1708,12 @@
             overflow: hidden;
             position: relative;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            display: flex;
-            /* For dual avatars */
+            display: block;
+            /* For single combined avatar */
         }
 
         .hud-avatar-img {
-            width: 50%;
+            width: 100%;
             height: 100%;
             object-fit: cover;
         }
@@ -1878,9 +1878,8 @@
         <!-- AVATAR SECTION -->
         <div class="hud-avatar-container">
             <div class="hud-avatar-frame">
-                <!-- Dual Avatar (50% split) -->
-                <img src="assets/img/avatar-bima.png" alt="Bima" class="hud-avatar-img">
-                <img src="assets/img/avatar-jas.png" alt="Jas" class="hud-avatar-img">
+                <!-- Single Combined Avatar -->
+                <img src="assets/img/avatar-couple.png" alt="Couple" class="hud-avatar-img">
                 <div class="hud-status-dot"></div>
             </div>
             <div class="hud-power-container">
