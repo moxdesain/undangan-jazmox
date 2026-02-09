@@ -1488,6 +1488,556 @@
                 transform: translate(30px, 30px) scale(1.1);
             }
         }
+
+        /* --- GUESTBOOK / GLOBAL CHAT (GAMER THEME) --- */
+        .wishes-section-wrapper {
+            padding: 20px 0;
+        }
+
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .wishes-form-col {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(212, 163, 115, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--rpg-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--rpg-gold);
+            box-shadow: 0 0 15px rgba(212, 163, 115, 0.2);
+        }
+
+        .btn-send-wish {
+            width: 100%;
+            background: linear-gradient(135deg, #D4A373, #aa7e52);
+            color: #0F172A;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .btn-send-wish:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 25px rgba(212, 163, 115, 0.5);
+        }
+
+        .btn-send-wish:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .wishes-feed-col {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .wishes-feed-col::before,
+        .wishes-feed-col::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .wishes-feed-col::before {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        .wishes-feed-col::after {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        .wishes-scroll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: ticker 25s linear infinite;
+        }
+
+        .wishes-scroll-container:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .wish-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            transition: background 0.3s;
+        }
+
+        .wish-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .wish-item-avatar {
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--rpg-gold), #c9a87c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0F172A;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .wish-item-content {
+            flex-grow: 1;
+        }
+
+        .wish-item-name {
+            color: var(--rpg-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .wish-item-message {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .wishes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wishes-feed-col {
+                height: 350px;
+            }
+        }
+
+        /* --- GAMER HUD (KINGSHOT STYLE) --- */
+        #main-content {
+            padding-top: 90px;
+            /* Account for fixed HUD height */
+        }
+
+        .rpg-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(14, 28, 28, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid #557777;
+        }
+
+        .hud-avatar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin-right: 15px;
+        }
+
+        .hud-avatar-frame {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            border: 2px solid #fff;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: block;
+            /* For single combined avatar */
+        }
+
+        .hud-avatar-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hud-status-dot {
+            width: 12px;
+            height: 12px;
+            background: #EF4444;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            z-index: 2;
+        }
+
+        .hud-power-container {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: -12px;
+            z-index: 2;
+            border: 1px solid #557777;
+            position: relative;
+        }
+
+        .hud-power-value {
+            font-family: 'Rubik', sans-serif, system-ui;
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .hud-resources-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            justify-content: flex-end;
+            overflow-x: auto;
+            /* Allow scroll on small screens if needed */
+            padding-bottom: 5px;
+            /* Scrollbar space */
+        }
+
+        .hud-resources-container::-webkit-scrollbar {
+            height: 0px;
+            background: transparent;
+        }
+
+        .hud-res-item {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 10px;
+            border-radius: 6px;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .hud-res-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .hud-res-value {
+            font-family: 'Rubik', sans-serif, system-ui;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .hud-res-gems {
+            background: linear-gradient(to bottom, #F59E0B, #D97706);
+            padding: 4px 10px;
+            border: 1px solid #FCD34D;
+        }
+
+        .hud-plus-btn {
+            width: 18px;
+            height: 18px;
+            background: #10B981;
+            color: #fff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .hud-vip-btn {
+            background: linear-gradient(to bottom, #EF4444, #B91C1C);
+            border: 2px solid #FCA5A5;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #7f1d1d;
+            margin-left: 5px;
+            white-space: nowrap;
+        }
+
+        /* --- KINGSHOT SHOP & GEMS STYLE --- */
+        .hud-kingshot-shop {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            /* Align right */
+            margin-left: 10px;
+            margin-top: 5px;
+        }
+
+        .hud-shop-box {
+            position: relative;
+            background: linear-gradient(to bottom, #F59E0B, #EA580C);
+            /* Orange Gradient */
+            border: 2px solid #FDE047;
+            /* Yellow border */
+            border-radius: 8px;
+            padding: 4px 10px 4px 6px;
+            /* Normal padding now */
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 0 #92400E;
+            /* Deeper shadow */
+            justify-content: flex-start;
+            z-index: 10;
+        }
+
+        .hud-shop-gem-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-right: 6px;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+        }
+
+        .hud-shop-value {
+            font-family: 'Rubik', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            /* Slightly bigger */
+            color: #fff;
+            text-shadow: 2px 2px 0 #7C2D12;
+            margin-right: 5px;
+            z-index: 20;
+            /* Text ON TOP */
+            position: relative;
+        }
+
+        .hud-shop-gems-img {
+            position: absolute;
+            top: -12px;
+            right: -5px;
+            width: 60px;
+            height: auto;
+            max-width: none;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            z-index: 10;
+            /* Gems BEHIND text */
+            pointer-events: none;
+            opacity: 0.9;
+            /* Slight transparency so text pops? Optional, keeping 1 for now */
+        }
+
+        /* Simplified VIP Layout */
+        .hud-vip-simple {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 4px;
+            padding: 4px 10px;
+            /* Bigger padding */
+            margin-top: 4px;
+            margin-right: 0px;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 900;
+            font-size: 0.9rem;
+            /* Bigger font */
+            color: #FCD34D;
+            /* Gold */
+            text-shadow: 1px 1px 0 #000;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+            z-index: 5;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+
+            /* --- MOBILE HUD OPTIMIZATION --- */
+            .rpg-hud {
+                padding: 0 5px;
+                /* Minimal padding */
+                height: 60px;
+                /* Shorter HUD */
+            }
+
+            .hud-avatar-frame {
+                width: 38px;
+                /* Smaller Avatar */
+                height: 38px;
+                border: 2px solid #FFF;
+                /* Ensure border is visible but thin */
+            }
+
+            .hud-power-container {
+                margin-top: -6px;
+                padding: 1px 4px;
+                border-radius: 6px;
+                border-width: 1px !important;
+                background: #064E3B;
+                /* Darker bg */
+            }
+
+            .hud-power-text {
+                font-size: 0.6rem !important;
+                /* Tiny power text */
+            }
+
+            .hud-power-icon {
+                font-size: 0.6rem !important;
+            }
+
+            /* Shop Box (Gems) - Compact Top Right */
+            .hud-kingshot-shop {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                margin: 0;
+                transform: scale(0.9);
+                /* Scale down entire box slightly */
+                transform-origin: top right;
+            }
+
+            .hud-shop-box {
+                padding: 2px 6px 2px 4px;
+                min-width: unset;
+                background: linear-gradient(to bottom, #F59E0B, #EA580C);
+            }
+
+            .hud-shop-gem-icon {
+                width: 14px;
+                height: 14px;
+                margin-right: 3px;
+            }
+
+            .hud-shop-value {
+                font-size: 0.75rem;
+                margin-right: 0;
+            }
+
+            /* Center Resources - Fit between Avatar and Shop */
+            .hud-center {
+                position: absolute;
+                top: 8px;
+                left: 50px;
+                /* Right of Avatar */
+                right: 90px;
+                /* Left of Shop Box */
+                justify-content: flex-start;
+                padding: 0;
+                overflow-x: hidden;
+                display: flex;
+            }
+
+            .hud-res-item {
+                padding: 1px 3px;
+                margin-right: 1px;
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 3px;
+                display: flex;
+                /* Ensure visible */
+                align-items: center;
+            }
+
+            .hud-res-icon {
+                width: 12px;
+                height: 12px;
+                margin-right: 2px;
+            }
+
+            .hud-res-value {
+                font-size: 0.6rem;
+                /* Micro text */
+                letter-spacing: -0.2px;
+            }
+
+            .hud-vip-simple {
+                font-size: 0.65rem;
+                padding: 1px 4px;
+                margin-top: 1px;
+            }
+
+
+
+            .hud-res-item {
+                margin-right: 2px;
+                background: rgba(0, 0, 0, 0.3);
+                /* Semi-transparent background */
+                padding: 1px 4px;
+                /* Tiny padding */
+            }
+
+            .hud-vip-btn {
+                padding: 4px 8px;
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 
@@ -1508,26 +2058,52 @@
     <!-- ========================================= -->
     <!-- RTS HUD (Kingshot Resource Bar) -->
     <!-- ========================================= -->
+    <!-- ========================================= -->
+    <!-- RTS HUD (Kingshot Style - Bima & Jas) -->
+    <!-- ========================================= -->
     <div class="rpg-hud" id="rpgHud">
-        <div class="resource-item">
-            <span class="resource-icon">🪙</span>
-            <span class="resource-value">∞</span>
+        <!-- AVATAR SECTION -->
+        <div class="hud-avatar-container">
+            <div class="hud-avatar-frame">
+                <!-- Single Combined Avatar -->
+                <img src="assets/img/avatar-couple.png" alt="Couple" class="hud-avatar-img">
+                <div class="hud-status-dot"></div>
+            </div>
+            <div class="hud-power-container">
+                <i class="fas fa-fist-raised" style="color: #4ADE80; margin-right: 5px;"></i>
+                <span class="hud-power-value">99,999,999</span>
+            </div>
         </div>
-        <div class="resource-item">
-            <span class="resource-icon">🪵</span>
-            <span class="resource-value">999K</span>
-        </div>
-        <div class="resource-item">
-            <span class="resource-icon">🍖</span>
-            <span class="resource-value">MAX</span>
-        </div>
-        <div class="resource-item">
-            <span class="resource-icon">🪨</span>
-            <span class="resource-value">∞</span>
-        </div>
-        <div class="resource-item" style="border-color: rgba(212, 163, 115, 0.6);">
-            <span class="resource-icon">👑</span>
-            <span class="resource-value" style="color: var(--rpg-gold);">Alliance: 2</span>
+
+        <!-- RESOURCE BAR -->
+        <div class="hud-resources-container">
+            <!-- Time / Countdown -->
+            <div class="hud-res-item">
+                <img src="assets/img/res-hammer.png" alt="" class="hud-res-icon">
+                <span class="hud-res-value">20:26</span>
+            </div>
+            <!-- Guests / Capacity -->
+            <div class="hud-res-item">
+                <img src="assets/img/res-people.png" alt="" class="hud-res-icon">
+                <span class="hud-res-value">300/300</span>
+            </div>
+            <!-- Love / Bread -->
+            <div class="hud-res-item">
+                <img src="assets/img/res-food.png" alt="" class="hud-res-icon">
+                <span class="hud-res-value">51.2M</span>
+            </div>
+            <!-- Kingshot Style Shop/Gems Button -->
+            <div class="hud-kingshot-shop">
+                <div class="hud-shop-box">
+                    <img src="assets/img/res-gems.png" alt="" class="hud-shop-gem-icon">
+                    <span class="hud-shop-value">99,999</span>
+                </div>
+
+                <!-- VIP Badge Simplified -->
+                <div class="hud-vip-simple">
+                    VIP 99
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1774,13 +2350,15 @@
                 <h2 class="section-title">Request for Support Buffs</h2>
 
                 <p class="text-body">
-                    Given the massive map size (> 7,500 KM) and complex travel logistics...
+                    Since the server location is 7,500 KM away (massive ping!) and requires expensive Fast Travel
+                    items...
                 </p>
 
                 <div
                     style="border: 1px solid rgba(212, 163, 115, 0.5); padding: 25px; border-radius: 14px; margin: 28px 0; background: rgba(212, 163, 115, 0.05);">
                     <p style="font-weight: bold; color: var(--accent); font-size: 1.1rem; line-height: 1.6;">
-                        We strictly DO NOT expect your physical presence or loot drops (gifts).
+                        We decided NOT to summon you physically. Please save your Gold. Your remote prayer buffs are all
+                        we need!
                     </p>
                 </div>
 
@@ -1788,6 +2366,43 @@
                     Your prayers for our household to be blessed with <span class="text-highlight">Love and
                         Tranquility</span> are the most Legendary items we could ask for.
                 </p>
+            </div>
+        </section>
+
+        <!-- GLOBAL CHAT (WISHES SECTION) -->
+        <section class="container">
+            <div class="anim-up wishes-section-wrapper">
+                <div class="divider-icon"><i class="fas fa-comment-dots"></i></div>
+                <h2 class="section-title"
+                    style="border:none; text-align:center; display:block; font-size: 2.2rem; margin-bottom: 50px; text-shadow: 0 0 20px rgba(212, 163, 115, 0.5);">
+                    Server Global Chat
+                </h2>
+
+                <div class="wishes-grid">
+                    <!-- LEFT: Form Column -->
+                    <div class="wishes-form-col">
+                        <div class="form-group">
+                            <label for="wishName">Player Name [IGN]</label>
+                            <input type="text" id="wishName" class="form-input" placeholder="Enter your IGN..."
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="wishMessage">Message / Buff</label>
+                            <textarea id="wishMessage" class="form-input" rows="4"
+                                placeholder="Cast a blessing or send a message..."></textarea>
+                        </div>
+                        <button class="btn-send-wish" onclick="submitWish()" id="btnSubmitWish">
+                            SEND TO SERVER
+                        </button>
+                    </div>
+
+                    <!-- RIGHT: Feed Column (Auto Scroll) -->
+                    <div class="wishes-feed-col">
+                        <div id="wishesFeed" class="wishes-scroll-container">
+                            <!-- Wishes will be rendered here by JS -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -1859,17 +2474,27 @@
 
             <!-- PayPal Info (Hidden Initially) -->
             <div id="bankInfo" class="bank-box">
-                <i class="fab fa-paypal" style="color: var(--accent); font-size: 2.5rem; margin-bottom: 15px;"></i>
+                <i class="fab fa-paypal" style="color: #003087; font-size: 2.5rem; margin-bottom: 15px;"></i>
                 <p
                     style="font-size: 0.85rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 2px;">
                     Send Loot via PayPal</p>
-                <span class="rek-num" style="font-size: 1.6rem;">@moxsenna</span>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">moxsenna@gmail.com</p>
 
-                <button onclick="copyRek()" class="copy-btn">
+                <a href="https://www.paypal.com/paypalme/moxsenna" target="_blank" style="display: inline-block; margin: 20px 0; padding: 15px 40px; 
+                          background: linear-gradient(135deg, #003087, #009cde); 
+                          color: white; text-decoration: none; border-radius: 50px; 
+                          font-family: 'Cinzel', serif; font-weight: bold; letter-spacing: 2px;
+                          box-shadow: 0 10px 30px rgba(0, 48, 135, 0.4); 
+                          transition: all 0.3s ease;">
+                    <i class="fab fa-paypal" style="margin-right: 10px;"></i>PayPal.me/moxsenna
+                </a>
+
+                <p style="color: var(--text-muted); font-size: 0.85rem;">or send to: moxsenna@gmail.com</p>
+
+                <button onclick="copyRek()" class="copy-btn" style="margin-top: 15px;">
                     <i class="fas fa-copy"></i> Copy Email
                 </button>
             </div>
+
 
             <!-- Buttons Dynamic -->
             <div id="mButtons" class="btn-action-group"></div>
@@ -2375,6 +3000,136 @@
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
+
+
+        // =============================================
+        // GLOBAL CHAT (WISHES) LOGIC
+        // =============================================
+
+        let wishesData = []; // Store fetched wishes
+
+        // Fetch wishes from API
+        async function fetchWishes() {
+            try {
+                const response = await fetch('api/wishes.php');
+                const data = await response.json();
+
+                if (data.success && data.wishes) {
+                    wishesData = data.wishes;
+                    renderWishes();
+                }
+            } catch (error) {
+                console.error('Error fetching wishes:', error);
+                renderWishes();
+            }
+        }
+
+        // Format relative time (English)
+        function timeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHour = Math.floor(diffMin / 60);
+            const diffDay = Math.floor(diffHour / 24);
+            const diffWeek = Math.floor(diffDay / 7);
+            const diffMonth = Math.floor(diffDay / 30);
+
+            if (diffSec < 60) return 'Just now';
+            if (diffMin < 60) return `${diffMin} mins ago`;
+            if (diffHour < 24) return `${diffHour} hours ago`;
+            if (diffDay < 7) return `${diffDay} days ago`;
+            if (diffWeek < 4) return `${diffWeek} weeks ago`;
+            if (diffMonth < 12) return `${diffMonth} months ago`;
+            return past.toLocaleDateString('en-GB');
+        }
+
+        // Render wishes to the feed
+        function renderWishes() {
+            const feed = document.getElementById('wishesFeed');
+            if (!feed) return;
+
+            feed.innerHTML = ''; // Clear existing
+
+            if (wishesData.length === 0) {
+                feed.innerHTML = '<div style="text-align:center; padding:40px; color:rgba(148, 163, 184, 0.5); font-style:italic;">No messages in Global Chat yet. Be the first to say GG!</div>';
+                return;
+            }
+
+            // Duplicate array for seamless looping animation
+            const displayData = [...wishesData, ...wishesData];
+
+            displayData.forEach(wish => {
+                const item = document.createElement('div');
+                item.className = 'wish-item';
+
+                const initial = wish.name.charAt(0).toUpperCase();
+                const relativeTime = wish.created_at ? timeAgo(wish.created_at) : '';
+
+                item.innerHTML = `
+                    <div class="wish-item-avatar">${initial}</div>
+                    <div class="wish-item-content">
+                        <div class="wish-item-name">${wish.name} <span style="font-weight:400; font-size:0.75rem; color:rgba(148,163,184,0.6); margin-left:8px;">${relativeTime}</span></div>
+                        <div class="wish-item-message">"${wish.message}"</div>
+                    </div>
+                `;
+                feed.appendChild(item);
+            });
+        }
+
+        // Submit new wish to API
+        async function submitWish() {
+            const nameInput = document.getElementById('wishName');
+            const msgInput = document.getElementById('wishMessage');
+            const btn = document.getElementById('btnSubmitWish');
+
+            const name = nameInput.value.trim();
+            const message = msgInput.value.trim();
+
+            if (!name || !message) {
+                alert("SYSTEM MESSAGE: Please enter your IGN and Message/Buff first!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'CASTING SPELL...';
+
+            try {
+                const response = await fetch('api/wishes.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, message })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Clear form
+                    nameInput.value = '';
+                    msgInput.value = '';
+
+                    // Refresh feed
+                    await fetchWishes();
+
+                    btn.textContent = 'BUFF APPLIED!';
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = 'SEND TO SERVER';
+                    }, 2000);
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error submitting wish:', error);
+                alert('SYSTEM ERROR: Failed to send message to server. Check your connection/ping.');
+                btn.disabled = false;
+                btn.textContent = 'SEND TO SERVER';
+            }
+        }
+
+        // Initial fetch
+        document.addEventListener('DOMContentLoaded', fetchWishes);
 
     </script>
 </body>
