@@ -1488,6 +1488,192 @@
                 transform: translate(30px, 30px) scale(1.1);
             }
         }
+
+        /* --- GUESTBOOK / GLOBAL CHAT (GAMER THEME) --- */
+        .wishes-section-wrapper {
+            padding: 20px 0;
+        }
+
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        .wishes-form-col {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(212, 163, 115, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--rpg-gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--rpg-gold);
+            box-shadow: 0 0 15px rgba(212, 163, 115, 0.2);
+        }
+
+        .btn-send-wish {
+            width: 100%;
+            background: linear-gradient(135deg, #D4A373, #aa7e52);
+            color: #0F172A;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .btn-send-wish:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 25px rgba(212, 163, 115, 0.5);
+        }
+
+        .btn-send-wish:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .wishes-feed-col {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .wishes-feed-col::before,
+        .wishes-feed-col::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .wishes-feed-col::before {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        .wishes-feed-col::after {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        .wishes-scroll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: ticker 25s linear infinite;
+        }
+
+        .wishes-scroll-container:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .wish-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            transition: background 0.3s;
+        }
+
+        .wish-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .wish-item-avatar {
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--rpg-gold), #c9a87c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0F172A;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .wish-item-content {
+            flex-grow: 1;
+        }
+
+        .wish-item-name {
+            color: var(--rpg-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .wish-item-message {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .wishes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wishes-feed-col {
+                height: 350px;
+            }
+        }
     </style>
 </head>
 
@@ -1790,6 +1976,43 @@
                     Your prayers for our household to be blessed with <span class="text-highlight">Love and
                         Tranquility</span> are the most Legendary items we could ask for.
                 </p>
+            </div>
+        </section>
+
+        <!-- GLOBAL CHAT (WISHES SECTION) -->
+        <section class="container">
+            <div class="anim-up wishes-section-wrapper">
+                <div class="divider-icon"><i class="fas fa-comment-dots"></i></div>
+                <h2 class="section-title"
+                    style="border:none; text-align:center; display:block; font-size: 2.2rem; margin-bottom: 50px; text-shadow: 0 0 20px rgba(212, 163, 115, 0.5);">
+                    Server Global Chat
+                </h2>
+
+                <div class="wishes-grid">
+                    <!-- LEFT: Form Column -->
+                    <div class="wishes-form-col">
+                        <div class="form-group">
+                            <label for="wishName">Player Name [IGN]</label>
+                            <input type="text" id="wishName" class="form-input" placeholder="Enter your IGN..."
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="wishMessage">Message / Buff</label>
+                            <textarea id="wishMessage" class="form-input" rows="4"
+                                placeholder="Cast a blessing or send a message..."></textarea>
+                        </div>
+                        <button class="btn-send-wish" onclick="submitWish()" id="btnSubmitWish">
+                            SEND TO SERVER
+                        </button>
+                    </div>
+
+                    <!-- RIGHT: Feed Column (Auto Scroll) -->
+                    <div class="wishes-feed-col">
+                        <div id="wishesFeed" class="wishes-scroll-container">
+                            <!-- Wishes will be rendered here by JS -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -2387,6 +2610,136 @@
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
+
+
+        // =============================================
+        // GLOBAL CHAT (WISHES) LOGIC
+        // =============================================
+
+        let wishesData = []; // Store fetched wishes
+
+        // Fetch wishes from API
+        async function fetchWishes() {
+            try {
+                const response = await fetch('api/wishes.php');
+                const data = await response.json();
+
+                if (data.success && data.wishes) {
+                    wishesData = data.wishes;
+                    renderWishes();
+                }
+            } catch (error) {
+                console.error('Error fetching wishes:', error);
+                renderWishes();
+            }
+        }
+
+        // Format relative time (English)
+        function timeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHour = Math.floor(diffMin / 60);
+            const diffDay = Math.floor(diffHour / 24);
+            const diffWeek = Math.floor(diffDay / 7);
+            const diffMonth = Math.floor(diffDay / 30);
+
+            if (diffSec < 60) return 'Just now';
+            if (diffMin < 60) return `${diffMin} mins ago`;
+            if (diffHour < 24) return `${diffHour} hours ago`;
+            if (diffDay < 7) return `${diffDay} days ago`;
+            if (diffWeek < 4) return `${diffWeek} weeks ago`;
+            if (diffMonth < 12) return `${diffMonth} months ago`;
+            return past.toLocaleDateString('en-GB');
+        }
+
+        // Render wishes to the feed
+        function renderWishes() {
+            const feed = document.getElementById('wishesFeed');
+            if (!feed) return;
+
+            feed.innerHTML = ''; // Clear existing
+
+            if (wishesData.length === 0) {
+                feed.innerHTML = '<div style="text-align:center; padding:40px; color:rgba(148, 163, 184, 0.5); font-style:italic;">No messages in Global Chat yet. Be the first to say GG!</div>';
+                return;
+            }
+
+            // Duplicate array for seamless looping animation
+            const displayData = [...wishesData, ...wishesData];
+
+            displayData.forEach(wish => {
+                const item = document.createElement('div');
+                item.className = 'wish-item';
+
+                const initial = wish.name.charAt(0).toUpperCase();
+                const relativeTime = wish.created_at ? timeAgo(wish.created_at) : '';
+
+                item.innerHTML = `
+                    <div class="wish-item-avatar">${initial}</div>
+                    <div class="wish-item-content">
+                        <div class="wish-item-name">${wish.name} <span style="font-weight:400; font-size:0.75rem; color:rgba(148,163,184,0.6); margin-left:8px;">${relativeTime}</span></div>
+                        <div class="wish-item-message">"${wish.message}"</div>
+                    </div>
+                `;
+                feed.appendChild(item);
+            });
+        }
+
+        // Submit new wish to API
+        async function submitWish() {
+            const nameInput = document.getElementById('wishName');
+            const msgInput = document.getElementById('wishMessage');
+            const btn = document.getElementById('btnSubmitWish');
+
+            const name = nameInput.value.trim();
+            const message = msgInput.value.trim();
+
+            if (!name || !message) {
+                alert("SYSTEM MESSAGE: Please enter your IGN and Message/Buff first!");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'CASTING SPELL...';
+
+            try {
+                const response = await fetch('api/wishes.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, message })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Clear form
+                    nameInput.value = '';
+                    msgInput.value = '';
+
+                    // Refresh feed
+                    await fetchWishes();
+
+                    btn.textContent = 'BUFF APPLIED!';
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = 'SEND TO SERVER';
+                    }, 2000);
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error submitting wish:', error);
+                alert('SYSTEM ERROR: Failed to send message to server. Check your connection/ping.');
+                btn.disabled = false;
+                btn.textContent = 'SEND TO SERVER';
+            }
+        }
+
+        // Initial fetch
+        document.addEventListener('DOMContentLoaded', fetchWishes);
 
     </script>
 </body>
