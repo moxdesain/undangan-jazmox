@@ -1676,6 +1676,11 @@
         }
 
         /* --- GAMER HUD (KINGSHOT STYLE) --- */
+        #main-content {
+            padding-top: 90px;
+            /* Account for fixed HUD height */
+        }
+
         .rpg-hud {
             position: fixed;
             top: 0;
@@ -1777,6 +1782,12 @@
             white-space: nowrap;
         }
 
+        .hud-res-icon {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
         .hud-res-value {
             font-family: 'Rubik', sans-serif, system-ui;
             font-weight: 700;
@@ -1789,68 +1800,175 @@
             background: linear-gradient(to bottom, #F59E0B, #D97706);
             padding: 4px 10px;
             border: 1px solid #FCD34D;
+        }
 
-            .hud-plus-btn {
-                width: 18px;
-                height: 18px;
-                background: #10B981;
-                color: #fff;
-                border-radius: 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+        .hud-plus-btn {
+            width: 18px;
+            height: 18px;
+            background: #10B981;
+            color: #fff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .hud-vip-btn {
+            background: linear-gradient(to bottom, #EF4444, #B91C1C);
+            border: 2px solid #FCA5A5;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 800;
+            font-size: 0.85rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #7f1d1d;
+            margin-left: 5px;
+            white-space: nowrap;
+        }
+
+        /* --- KINGSHOT SHOP & GEMS STYLE --- */
+        .hud-kingshot-shop {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            /* Align right */
+            margin-left: 10px;
+            margin-top: 5px;
+        }
+
+        .hud-shop-box {
+            position: relative;
+            background: linear-gradient(to bottom, #F59E0B, #EA580C);
+            /* Orange Gradient */
+            border: 2px solid #FDE047;
+            /* Yellow border */
+            border-radius: 8px;
+            padding: 4px 10px 4px 6px;
+            /* Normal padding now */
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 0 #92400E;
+            /* Deeper shadow */
+            justify-content: flex-start;
+            z-index: 10;
+        }
+
+        .hud-shop-gem-icon {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            margin-right: 6px;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+        }
+
+        .hud-shop-value {
+            font-family: 'Rubik', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            /* Slightly bigger */
+            color: #fff;
+            text-shadow: 2px 2px 0 #7C2D12;
+            margin-right: 5px;
+            z-index: 20;
+            /* Text ON TOP */
+            position: relative;
+        }
+
+        .hud-shop-gems-img {
+            position: absolute;
+            top: -12px;
+            right: -5px;
+            width: 60px;
+            height: auto;
+            max-width: none;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            z-index: 10;
+            /* Gems BEHIND text */
+            pointer-events: none;
+            opacity: 0.9;
+            /* Slight transparency so text pops? Optional, keeping 1 for now */
+        }
+
+        /* Simplified VIP Layout */
+        .hud-vip-simple {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 4px;
+            padding: 4px 10px;
+            /* Bigger padding */
+            margin-top: 4px;
+            margin-right: 0px;
+            font-family: 'Rubik', sans-serif;
+            font-weight: 900;
+            font-size: 0.9rem;
+            /* Bigger font */
+            color: #FCD34D;
+            /* Gold */
+            text-shadow: 1px 1px 0 #000;
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4);
+            z-index: 5;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 600px) {
+            .rpg-hud {
+                padding: 0 10px;
+                height: 70px;
+            }
+
+            .hud-avatar-frame {
+                width: 45px;
+                height: 45px;
+            }
+
+            /* Mobile adjustments for Kingshot Shop */
+            .hud-shop-box {
+                padding: 4px 8px 4px 4px;
+                /* Smaller on mobile */
+            }
+
+            .hud-shop-gem-icon {
+                width: 20px;
+                height: 20px;
+                margin-right: 4px;
+            }
+
+            .hud-shop-value {
+                font-size: 0.85rem;
+            }
+
+            .hud-vip-simple {
                 font-size: 0.75rem;
-                font-weight: bold;
-                margin-left: 5px;
+                padding: 2px 8px;
+                margin-top: 2px;
+            }
+
+            .hud-power-container {
+                margin-top: -10px;
+                padding: 1px 5px;
+            }
+
+            .hud-res-item:not(.hud-res-gems) {
+                display: none;
+            }
+
+            /* Hide secondary resources on mobile */
+            .hud-res-gems {
+                display: flex;
             }
 
             .hud-vip-btn {
-                background: linear-gradient(to bottom, #EF4444, #B91C1C);
-                border: 2px solid #FCA5A5;
-                padding: 5px 12px;
-                border-radius: 8px;
-                font-family: 'Rubik', sans-serif;
-                font-weight: 800;
-                font-size: 0.85rem;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                box-shadow: 0 3px 0 #7f1d1d;
-                margin-left: 5px;
-                white-space: nowrap;
+                padding: 4px 8px;
+                font-size: 0.75rem;
             }
-
-            @media (max-width: 600px) {
-                .rpg-hud {
-                    padding: 0 10px;
-                    height: 70px;
-                }
-
-                .hud-avatar-frame {
-                    width: 45px;
-                    height: 45px;
-                }
-
-                .hud-power-container {
-                    margin-top: -10px;
-                    padding: 1px 5px;
-                }
-
-                .hud-res-item:not(.hud-res-gems) {
-                    display: none;
-                }
-
-                /* Hide secondary resources on mobile */
-                .hud-res-gems {
-                    display: flex;
-                }
-
-                .hud-vip-btn {
-                    padding: 4px 8px;
-                    font-size: 0.75rem;
-                }
-            }
+        }
     </style>
 </head>
 
@@ -1892,30 +2010,30 @@
         <div class="hud-resources-container">
             <!-- Time / Countdown -->
             <div class="hud-res-item">
-                <i class="fas fa-hammer" style="color: #FCD34D;"></i>
+                <img src="assets/img/res-hammer.png" alt="" class="hud-res-icon">
                 <span class="hud-res-value">20:26</span>
             </div>
             <!-- Guests / Capacity -->
             <div class="hud-res-item">
-                <i class="fas fa-users" style="color: #60A5FA;"></i>
+                <img src="assets/img/res-people.png" alt="" class="hud-res-icon">
                 <span class="hud-res-value">300/300</span>
             </div>
             <!-- Love / Bread -->
             <div class="hud-res-item">
-                <i class="fas fa-bread-slice" style="color: #F97316;"></i>
+                <img src="assets/img/res-food.png" alt="" class="hud-res-icon">
                 <span class="hud-res-value">51.2M</span>
             </div>
-            <!-- Blessings / Gems -->
-            <div class="hud-res-item hud-res-gems">
-                <i class="fas fa-gem" style="color: #3B82F6;"></i>
-                <span class="hud-res-value">260K</span>
-                <div class="hud-plus-btn">+</div>
-            </div>
+            <!-- Kingshot Style Shop/Gems Button -->
+            <div class="hud-kingshot-shop">
+                <div class="hud-shop-box">
+                    <img src="assets/img/res-gems.png" alt="" class="hud-shop-gem-icon">
+                    <span class="hud-shop-value">99,999</span>
+                </div>
 
-            <!-- VIP Badge -->
-            <div class="hud-vip-btn">
-                <i class="fas fa-crown" style="color: #F59E0B; margin-right: 5px;"></i>
-                <span>VIP 6</span>
+                <!-- VIP Badge Simplified -->
+                <div class="hud-vip-simple">
+                    VIP 99
+                </div>
             </div>
         </div>
     </div>
