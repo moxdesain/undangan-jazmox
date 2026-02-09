@@ -1852,21 +1852,22 @@
             border: 2px solid #FDE047;
             /* Yellow border */
             border-radius: 8px;
-            padding: 4px 10px 4px 6px;
-            /* Normal padding now */
+            padding: 4px;
+            /* Minimal padding */
             display: flex;
             align-items: center;
             box-shadow: 0 4px 0 #92400E;
             /* Deeper shadow */
-            justify-content: flex-start;
+            justify-content: center;
+            /* Center image */
             z-index: 10;
         }
 
         .hud-shop-gem-icon {
-            width: 24px;
-            height: 24px;
+            width: 70px;
+            height: auto;
             object-fit: contain;
-            margin-right: 6px;
+            margin: 0;
             filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
         }
 
@@ -1966,20 +1967,20 @@
             }
 
             .hud-shop-box {
-                padding: 2px 6px 2px 4px;
+                padding: 2px;
                 min-width: unset;
                 background: linear-gradient(to bottom, #F59E0B, #EA580C);
             }
 
             .hud-shop-gem-icon {
-                width: 14px;
-                height: 14px;
-                margin-right: 3px;
+                width: 50px;
+                /* Large enough to show image text */
+                height: auto;
+                margin: 0;
             }
 
             .hud-shop-value {
-                font-size: 0.75rem;
-                margin-right: 0;
+                display: none;
             }
 
             /* Center Resources - Fit between Avatar and Shop */
@@ -2097,7 +2098,6 @@
             <div class="hud-kingshot-shop">
                 <div class="hud-shop-box">
                     <img src="/assets/img/res-gems.png" alt="" class="hud-shop-gem-icon">
-                    <span class="hud-shop-value">99,999</span>
                 </div>
 
                 <!-- VIP Badge Simplified -->
