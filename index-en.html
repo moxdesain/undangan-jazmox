@@ -1674,6 +1674,183 @@
                 height: 350px;
             }
         }
+
+        /* --- GAMER HUD (KINGSHOT STYLE) --- */
+        .rpg-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(14, 28, 28, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            border-bottom: 2px solid #557777;
+        }
+
+        .hud-avatar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin-right: 15px;
+        }
+
+        .hud-avatar-frame {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            border: 2px solid #fff;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            display: flex;
+            /* For dual avatars */
+        }
+
+        .hud-avatar-img {
+            width: 50%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hud-status-dot {
+            width: 12px;
+            height: 12px;
+            background: #EF4444;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            z-index: 2;
+        }
+
+        .hud-power-container {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-top: -12px;
+            z-index: 2;
+            border: 1px solid #557777;
+            position: relative;
+        }
+
+        .hud-power-value {
+            font-family: 'Rubik', sans-serif, system-ui;
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .hud-resources-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+            justify-content: flex-end;
+            overflow-x: auto;
+            /* Allow scroll on small screens if needed */
+            padding-bottom: 5px;
+            /* Scrollbar space */
+        }
+
+        .hud-resources-container::-webkit-scrollbar {
+            height: 0px;
+            background: transparent;
+        }
+
+        .hud-res-item {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 10px;
+            border-radius: 6px;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .hud-res-value {
+            font-family: 'Rubik', sans-serif, system-ui;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #fff;
+            text-shadow: 1px 1px 0 #000;
+        }
+
+        .hud-res-gems {
+            background: linear-gradient(to bottom, #F59E0B, #D97706);
+            padding: 4px 10px;
+            border: 1px solid #FCD34D;
+
+            .hud-plus-btn {
+                width: 18px;
+                height: 18px;
+                background: #10B981;
+                color: #fff;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.75rem;
+                font-weight: bold;
+                margin-left: 5px;
+            }
+
+            .hud-vip-btn {
+                background: linear-gradient(to bottom, #EF4444, #B91C1C);
+                border: 2px solid #FCA5A5;
+                padding: 5px 12px;
+                border-radius: 8px;
+                font-family: 'Rubik', sans-serif;
+                font-weight: 800;
+                font-size: 0.85rem;
+                color: #fff;
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                box-shadow: 0 3px 0 #7f1d1d;
+                margin-left: 5px;
+                white-space: nowrap;
+            }
+
+            @media (max-width: 600px) {
+                .rpg-hud {
+                    padding: 0 10px;
+                    height: 70px;
+                }
+
+                .hud-avatar-frame {
+                    width: 45px;
+                    height: 45px;
+                }
+
+                .hud-power-container {
+                    margin-top: -10px;
+                    padding: 1px 5px;
+                }
+
+                .hud-res-item:not(.hud-res-gems) {
+                    display: none;
+                }
+
+                /* Hide secondary resources on mobile */
+                .hud-res-gems {
+                    display: flex;
+                }
+
+                .hud-vip-btn {
+                    padding: 4px 8px;
+                    font-size: 0.75rem;
+                }
+            }
     </style>
 </head>
 
@@ -1694,26 +1871,53 @@
     <!-- ========================================= -->
     <!-- RTS HUD (Kingshot Resource Bar) -->
     <!-- ========================================= -->
+    <!-- ========================================= -->
+    <!-- RTS HUD (Kingshot Style - Bima & Jas) -->
+    <!-- ========================================= -->
     <div class="rpg-hud" id="rpgHud">
-        <div class="resource-item">
-            <span class="resource-icon">🪙</span>
-            <span class="resource-value">∞</span>
+        <!-- AVATAR SECTION -->
+        <div class="hud-avatar-container">
+            <div class="hud-avatar-frame">
+                <!-- Dual Avatar (50% split) -->
+                <img src="assets/img/avatar-bima.png" alt="Bima" class="hud-avatar-img">
+                <img src="assets/img/avatar-jas.png" alt="Jas" class="hud-avatar-img">
+                <div class="hud-status-dot"></div>
+            </div>
+            <div class="hud-power-container">
+                <i class="fas fa-fist-raised" style="color: #4ADE80; margin-right: 5px;"></i>
+                <span class="hud-power-value">99,999,999</span>
+            </div>
         </div>
-        <div class="resource-item">
-            <span class="resource-icon">🪵</span>
-            <span class="resource-value">999K</span>
-        </div>
-        <div class="resource-item">
-            <span class="resource-icon">🍖</span>
-            <span class="resource-value">MAX</span>
-        </div>
-        <div class="resource-item">
-            <span class="resource-icon">🪨</span>
-            <span class="resource-value">∞</span>
-        </div>
-        <div class="resource-item" style="border-color: rgba(212, 163, 115, 0.6);">
-            <span class="resource-icon">👑</span>
-            <span class="resource-value" style="color: var(--rpg-gold);">Alliance: 2</span>
+
+        <!-- RESOURCE BAR -->
+        <div class="hud-resources-container">
+            <!-- Time / Countdown -->
+            <div class="hud-res-item">
+                <i class="fas fa-hammer" style="color: #FCD34D;"></i>
+                <span class="hud-res-value">20:26</span>
+            </div>
+            <!-- Guests / Capacity -->
+            <div class="hud-res-item">
+                <i class="fas fa-users" style="color: #60A5FA;"></i>
+                <span class="hud-res-value">300/300</span>
+            </div>
+            <!-- Love / Bread -->
+            <div class="hud-res-item">
+                <i class="fas fa-bread-slice" style="color: #F97316;"></i>
+                <span class="hud-res-value">51.2M</span>
+            </div>
+            <!-- Blessings / Gems -->
+            <div class="hud-res-item hud-res-gems">
+                <i class="fas fa-gem" style="color: #3B82F6;"></i>
+                <span class="hud-res-value">260K</span>
+                <div class="hud-plus-btn">+</div>
+            </div>
+
+            <!-- VIP Badge -->
+            <div class="hud-vip-btn">
+                <i class="fas fa-crown" style="color: #F59E0B; margin-right: 5px;"></i>
+                <span>VIP 6</span>
+            </div>
         </div>
     </div>
 
