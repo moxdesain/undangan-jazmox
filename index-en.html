@@ -1918,70 +1918,119 @@
         }
 
         @media (max-width: 600px) {
+
+            /* --- MOBILE HUD OPTIMIZATION --- */
             .rpg-hud {
-                padding: 0 10px;
-                height: 70px;
+                padding: 0 5px;
+                /* Minimal padding */
+                height: 60px;
+                /* Shorter HUD */
             }
 
             .hud-avatar-frame {
-                width: 45px;
-                height: 45px;
-            }
-
-            /* Mobile adjustments for Kingshot Shop */
-            .hud-shop-box {
-                padding: 4px 6px 4px 4px;
-                /* Wrap tighter */
-            }
-
-            .hud-shop-gem-icon {
-                width: 18px;
-                /* Smaller icon */
-                height: 18px;
-                margin-right: 4px;
-            }
-
-            .hud-shop-value {
-                font-size: 0.8rem;
-                /* Smaller font for Gems */
-            }
-
-            /* Resource Items in Mobile */
-            .hud-res-item {
-                padding: 2px 6px;
-                /* Compact padding */
-                margin-left: 4px;
-            }
-
-            .hud-res-icon {
-                width: 18px;
-                /* Smaller resource icons */
-                height: 18px;
-            }
-
-            .hud-res-value {
-                font-size: 0.75rem;
-                /* Smaller text for resources */
-            }
-
-            .hud-vip-simple {
-                font-size: 0.75rem;
-                padding: 2px 8px;
-                margin-top: 2px;
+                width: 38px;
+                /* Smaller Avatar */
+                height: 38px;
+                border: 2px solid #FFF;
+                /* Ensure border is visible but thin */
             }
 
             .hud-power-container {
-                margin-top: -10px;
-                padding: 1px 5px;
+                margin-top: -6px;
+                padding: 1px 4px;
+                border-radius: 6px;
+                border-width: 1px !important;
+                background: #064E3B;
+                /* Darker bg */
             }
 
-            .hud-res-item:not(.hud-res-gems) {
-                display: none;
+            .hud-power-text {
+                font-size: 0.6rem !important;
+                /* Tiny power text */
             }
 
-            /* Hide secondary resources on mobile */
-            .hud-res-gems {
+            .hud-power-icon {
+                font-size: 0.6rem !important;
+            }
+
+            /* Shop Box (Gems) - Compact Top Right */
+            .hud-kingshot-shop {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                margin: 0;
+                transform: scale(0.9);
+                /* Scale down entire box slightly */
+                transform-origin: top right;
+            }
+
+            .hud-shop-box {
+                padding: 2px 6px 2px 4px;
+                min-width: unset;
+                background: linear-gradient(to bottom, #F59E0B, #EA580C);
+            }
+
+            .hud-shop-gem-icon {
+                width: 14px;
+                height: 14px;
+                margin-right: 3px;
+            }
+
+            .hud-shop-value {
+                font-size: 0.75rem;
+                margin-right: 0;
+            }
+
+            /* Center Resources - Fit between Avatar and Shop */
+            .hud-center {
+                position: absolute;
+                top: 8px;
+                left: 50px;
+                /* Right of Avatar */
+                right: 90px;
+                /* Left of Shop Box */
+                justify-content: flex-start;
+                padding: 0;
+                overflow-x: hidden;
                 display: flex;
+            }
+
+            .hud-res-item {
+                padding: 1px 3px;
+                margin-right: 1px;
+                background: rgba(0, 0, 0, 0.3);
+                border-radius: 3px;
+                display: flex;
+                /* Ensure visible */
+                align-items: center;
+            }
+
+            .hud-res-icon {
+                width: 12px;
+                height: 12px;
+                margin-right: 2px;
+            }
+
+            .hud-res-value {
+                font-size: 0.6rem;
+                /* Micro text */
+                letter-spacing: -0.2px;
+            }
+
+            .hud-vip-simple {
+                font-size: 0.65rem;
+                padding: 1px 4px;
+                margin-top: 1px;
+            }
+
+
+
+            .hud-res-item {
+                margin-right: 2px;
+                background: rgba(0, 0, 0, 0.3);
+                /* Semi-transparent background */
+                padding: 1px 4px;
+                /* Tiny padding */
             }
 
             .hud-vip-btn {
