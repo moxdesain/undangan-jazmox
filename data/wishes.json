@@ -1,0 +1,44 @@
+[
+    {
+        "id": 2,
+        "name": "Budi Santoso",
+        "message": "Barakallah! Semoga pernikahan kalian menjadi ladang pahala dan penuh berkah. Aamiin.",
+        "created_at": "2026-02-08T04:30:00+00:00"
+    },
+    {
+        "id": 3,
+        "name": "Citra Lestari",
+        "message": "Dua hati kini menyatu. Semoga cinta kalian abadi seperti bintang di langit malam.",
+        "created_at": "2026-02-08T05:15:00+00:00"
+    },
+    {
+        "id": 4,
+        "name": "Dimas Prasetyo",
+        "message": "Selamat Bima & Jasmine! Semoga rumah tangga kalian dipenuhi tawa dan kebahagiaan.",
+        "created_at": "2026-02-08T07:00:00+00:00"
+    },
+    {
+        "id": 5,
+        "name": "Eva Maharani",
+        "message": "MasyaAllah, bahagia sekali melihat kalian bersanding. Semoga menjadi pasangan yang saling melengkapi.",
+        "created_at": "2026-02-08T08:45:00+00:00"
+    },
+    {
+        "id": 6,
+        "name": "Fajar Ramadhan",
+        "message": "Semoga Allah selalu melimpahkan rahmat dan kasih sayang dalam perjalanan rumah tangga kalian.",
+        "created_at": "2026-02-08T09:30:00+00:00"
+    },
+    {
+        "id": 7,
+        "name": "Gita Nirmala",
+        "message": "Wishing you both a lifetime of love, laughter, and happily ever after!",
+        "created_at": "2026-02-09T02:00:00+00:00"
+    },
+    {
+        "id": 8,
+        "name": "Hendra Wijaya",
+        "message": "Semoga Allah menjadikan kalian pasangan yang selalu bersyukur dalam suka maupun duka.",
+        "created_at": "2026-02-09T04:00:00+00:00"
+    }
+]

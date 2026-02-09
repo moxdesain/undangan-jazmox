@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Announcement: Bima & Jasmine</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
     <!-- Fonts Premium -->
     <link
@@ -762,6 +763,248 @@
                 transform: translate(30px, 30px) scale(1.1);
             }
         }
+
+        /* --- SIDE DECORATION FRAMES (INLINE SVG) --- */
+        .svg-frame {
+            position: fixed;
+            top: 0;
+            height: 100vh;
+            width: 100px;
+            z-index: 50;
+            pointer-events: none;
+            /* Use visibility hidden instead of display none so getTotalLength works */
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .svg-frame-left {
+            left: 0;
+        }
+
+        .svg-frame-right {
+            right: 0;
+            transform: scaleX(-1);
+        }
+
+        /* SVG Inner Styling */
+        .vine-path {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            /* Dashed line for draw effect, value set in JS */
+            opacity: 0.8;
+            filter: drop-shadow(0 0 3px rgba(212, 163, 115, 0.4));
+        }
+
+        .flower-bud {
+            fill: var(--accent-light);
+            stroke: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .svg-frame {
+                width: 50px;
+            }
+        }
+
+        /* --- GUESTBOOK / UCAPAN DOA (REDESIGNED) --- */
+        .wishes-section-wrapper {
+            padding: 20px 0;
+        }
+
+        /* 2 Column Grid Layout */
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: start;
+        }
+
+        /* --- FORM COLUMN (LEFT) --- */
+        .wishes-form-col {
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 20px;
+            padding: 35px;
+            border: 1px solid rgba(212, 163, 115, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--accent);
+            font-family: 'Cinzel', serif;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(212, 163, 115, 0.2);
+        }
+
+        .form-input::placeholder {
+            color: rgba(148, 163, 184, 0.4);
+        }
+
+        .btn-send-wish {
+            width: 100%;
+            background: linear-gradient(135deg, var(--accent), #aa7e52);
+            color: #0F172A;
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .btn-send-wish:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 25px rgba(212, 163, 115, 0.5);
+        }
+
+        .btn-send-wish:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* --- FEED COLUMN (RIGHT) --- */
+        .wishes-feed-col {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 450px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Fade mask at top and bottom */
+        .wishes-feed-col::before,
+        .wishes-feed-col::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .wishes-feed-col::before {
+            top: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        .wishes-feed-col::after {
+            bottom: 0;
+            background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        .wishes-scroll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: ticker 25s linear infinite;
+        }
+
+        .wishes-scroll-container:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translateY(0);
+            }
+
+            100% {
+                transform: translateY(-50%);
+            }
+        }
+
+        .wish-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 18px;
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+            transition: background 0.3s;
+        }
+
+        .wish-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .wish-item-avatar {
+            flex-shrink: 0;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--accent), #c9a87c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0F172A;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .wish-item-content {
+            flex-grow: 1;
+        }
+
+        .wish-item-name {
+            color: var(--accent);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .wish-item-message {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        /* Mobile: Stack Columns */
+        @media (max-width: 768px) {
+            .wishes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wishes-feed-col {
+                height: 350px;
+            }
+        }
     </style>
 </head>
 
@@ -773,6 +1016,53 @@
     <!-- Floating ambient elements -->
     <div class="float-element float-1"></div>
     <div class="float-element float-2"></div>
+
+    <!-- SIDE DECORATION (INLINE SVG) -->
+    <div class="svg-frame svg-frame-left" id="frame-left">
+        <svg viewBox="0 0 100 800" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+            <!-- Main Vine -->
+            <path class="vine-path" d="M10,0 Q10,100 40,150 T60,300 T30,500 T80,700 T40,800" />
+            <!-- Branches / Leaves (Attached to main vine) -->
+            <path class="vine-path" d="M40,150 Q70,140 80,160" />
+            <circle class="flower-bud" cx="80" cy="160" r="3" />
+
+            <path class="vine-path" d="M60,300 Q90,320 80,350" />
+            <circle class="flower-bud" cx="80" cy="350" r="3" />
+
+            <path class="vine-path" d="M30,500 Q0,520 10,550" />
+            <circle class="flower-bud" cx="10" cy="550" r="3" />
+
+            <path class="vine-path" d="M80,700 Q100,680 90,650" />
+            <circle class="flower-bud" cx="90" cy="650" r="3" />
+
+            <!-- Secondary interwoven line -->
+            <path class="vine-path" d="M30,0 Q30,120 10,180 T40,350 T80,550 T20,750 T50,800"
+                style="opacity: 0.5; stroke-width: 1;" />
+        </svg>
+    </div>
+
+    <div class="svg-frame svg-frame-right" id="frame-right">
+        <svg viewBox="0 0 100 800" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+            <!-- Same paths, will be mirrored by CSS -->
+            <!-- Main Vine -->
+            <path class="vine-path" d="M10,0 Q10,100 40,150 T60,300 T30,500 T80,700 T40,800" />
+            <!-- Branches / Leaves -->
+            <path class="vine-path" d="M40,150 Q70,140 80,160" />
+            <circle class="flower-bud" cx="80" cy="160" r="3" />
+
+            <path class="vine-path" d="M60,300 Q90,320 80,350" />
+            <circle class="flower-bud" cx="80" cy="350" r="3" />
+
+            <path class="vine-path" d="M30,500 Q0,520 10,550" />
+            <circle class="flower-bud" cx="10" cy="550" r="3" />
+
+            <path class="vine-path" d="M80,700 Q100,680 90,650" />
+            <circle class="flower-bud" cx="90" cy="650" r="3" />
+            <!-- Secondary -->
+            <path class="vine-path" d="M30,0 Q30,120 10,180 T40,350 T80,550 T20,750 T50,800"
+                style="opacity: 0.5; stroke-width: 1;" />
+        </svg>
+    </div>
 
     <!-- AUDIO ELEMENT -->
     <audio id="bg-music" loop preload="auto">
@@ -892,18 +1182,73 @@
             </div>
         </section>
 
-        <!-- BASA BASI & TOMBOL -->
-        <section class="container" style="justify-content: flex-start;">
-            <div class="anim-up">
-                <h2 class="section-title">Tanda Kasih</h2>
+        <!-- WISHES / DOA RESTU SECTION -->
+        <section class="container">
+            <div class="anim-up wishes-section-wrapper">
+                <div class="divider-icon"><i class="fas fa-feather-alt"></i></div>
+                <h2 class="section-title"
+                    style="border:none; text-align:center; display:block; font-size: 2.2rem; margin-bottom: 50px; text-shadow: 0 0 20px rgba(212, 163, 115, 0.5);">
+                    Untaian Doa
+                </h2>
 
-                <p class="text-body" style="text-align: justify; margin-bottom: 30px;">
-                    Kami memahami bahwa dalam tradisi silaturahmi kita, terkadang ada keinginan kuat untuk berbagi
-                    kebahagiaan. Namun, izinkan kami menegaskan kembali bahwa <strong>doa restu Anda sudah sangat
-                        mencukupi</strong> dan sangat kami hargai.
-                    <br><br>
-                    Namun, apabila hati Anda tetap tergerak dan bersikeras ingin memberikan tanda kasih sebagai wujud
-                    doa...
+                <div class="wishes-grid">
+                    <!-- LEFT: Form Column -->
+                    <div class="wishes-form-col">
+                        <div class="form-group">
+                            <label for="wishName">Nama Anda</label>
+                            <input type="text" id="wishName" class="form-input" placeholder="Masukkan nama..."
+                                autocomplete="off">
+                        </div>
+                        <div class="form-group">
+                            <label for="wishMessage">Pesan & Doa</label>
+                            <textarea id="wishMessage" class="form-input" rows="4"
+                                placeholder="Tuliskan doa terbaik Anda..."></textarea>
+                        </div>
+                        <button class="btn-send-wish" onclick="submitWish()" id="btnSubmitWish">
+                            KIRIM DOA
+                        </button>
+                    </div>
+
+                    <!-- RIGHT: Feed Column (Auto Scroll) -->
+                    <div class="wishes-feed-col">
+                        <div id="wishesFeed" class="wishes-scroll-container">
+                            <!-- Wishes will be rendered here by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HIDDEN GIFT REVEAL TRIGGER (at bottom) -->
+        <section class="container" style="margin-top: 60px; margin-bottom: 40px;">
+            <div class="anim-up" style="text-align: center;">
+                <p
+                    style="color: var(--text-secondary); font-size: 0.95rem; font-style: italic; max-width: 600px; margin: 0 auto 25px auto; line-height: 1.8;">
+                    <i class="fas fa-heart" style="color: var(--accent); opacity: 0.6; margin-right: 8px;"></i>
+                    Kehadiran Bapak/Ibu/Saudara/i serta doa tulus yang terucap adalah karunia terbesar bagi kami. Kami
+                    memahami bahwa ketulusan kasih sayang Anda tidak dapat diukur dengan materi. Oleh karena itu, dengan
+                    segala kerendahan hati dan tanpa mengurangi rasa hormat, kami ingin menyampaikan bahwa doa restu
+                    Anda untuk mengiringi langkah awal kami sudah sangat mencukupi dan menyempurnakan kebahagiaan kami.
+                </p>
+                <button id="revealGiftBtn" onclick="toggleGiftSection()"
+                    style="background: rgba(212, 163, 115, 0.1); border: 1px solid rgba(212, 163, 115, 0.4); color: var(--accent); padding: 14px 35px; font-size: 0.9rem; letter-spacing: 1px; cursor: pointer; border-radius: 10px; transition: all 0.3s; font-family: 'Cinzel', serif;">
+                    <i class="fas fa-gift" id="revealIcon" style="margin-right: 10px;"></i>
+                    Kirim Tanda Kasih
+                </button>
+            </div>
+        </section>
+
+        <!-- TANDA KASIH SECTION (HIDDEN BY DEFAULT) -->
+        <section id="giftSection" class="container"
+            style="display: none; justify-content: flex-start; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease;">
+            <div class="anim-up">
+                <h2 class="section-title" style="font-size: 1.5rem; opacity: 0.8;">Tanda Kasih</h2>
+
+                <p class="text-body"
+                    style="text-align: center; margin-bottom: 30px; font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Namun jika hati Bapak/Ibu/Saudara/i tetap tergerak untuk memberikan tanda kasih sebagai pelengkap
+                    doa restu, dengan segala kerendahan hati kami menerimanya. Semoga Allah SWT membalas ketulusan dan
+                    kebaikan Anda dengan keberkahan yang berlimpah.
                 </p>
 
                 <div style="display: flex; flex-direction: column; gap: 20px; max-width: 420px; margin: 0 auto;">
@@ -926,21 +1271,14 @@
                         via WA
                     </a>
                 </div>
-
-                <!-- LIVE DONATION FEED (New Feature) -->
-                <div id="donation-feed" style="margin-top: 40px; display: none;">
-                    <h4 style="font-size: 0.9rem; color: var(--accent); margin-bottom: 15px; letter-spacing: 1px;">
-                        TERIMA KASIH KEPADA:</h4>
-                    <div id="donor-list" style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
-                        <!-- JS injected items -->
-                    </div>
-                </div>
             </div>
+        </section>
 
-            <footer style="margin-top: 120px; text-align: center; opacity: 0.5; font-size: 0.85rem;">
-                <p style="letter-spacing: 3px; font-family: 'Cinzel', serif;">BIMA & JASMINE</p>
-                <p style="font-size: 0.75rem; margin-top: 8px;">Jakarta – Tehran 2026</p>
-            </footer>
+        <!-- FOOTER -->
+        <footer style="margin-top: 120px; text-align: center; opacity: 0.5; font-size: 0.85rem; padding-bottom: 40px;">
+            <p style="letter-spacing: 3px; font-family: 'Cinzel', serif;">BIMA & JASMINE</p>
+            <p style="font-size: 0.75rem; margin-top: 8px;">Jakarta – Tehran 2026</p>
+        </footer>
         </section>
 
     </div>
@@ -953,21 +1291,81 @@
             <p id="mText" style="color: var(--text-primary); margin-bottom: 25px; font-size: 1rem; line-height: 1.7;">
                 Text</p>
 
-            <!-- Payment Input (Hidden Initially) -->
+            <!-- Manual Bank Transfer Section (Hidden Initially) -->
             <div id="paymentInput" class="payment-input-box" style="display: none;">
-                <label class="amount-label">Masukkan Nominal Tanda Kasih</label>
-                <input type="text" id="giftAmount" class="amount-input" placeholder="Rp 50.000"
-                    oninput="formatAmount(this)" inputmode="numeric">
-                <div class="quick-amount-buttons">
-                    <button type="button" class="quick-amount-btn" onclick="setAmount(50000)">50rb</button>
-                    <button type="button" class="quick-amount-btn" onclick="setAmount(100000)">100rb</button>
-                    <button type="button" class="quick-amount-btn" onclick="setAmount(200000)">200rb</button>
-                    <button type="button" class="quick-amount-btn" onclick="setAmount(500000)">500rb</button>
+
+                <!-- Step 1: Bank Details -->
+                <div id="bankDetailsStep">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <i class="fas fa-university"
+                            style="font-size: 2rem; color: var(--accent); margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Silakan transfer ke rekening
+                            berikut:</p>
+                    </div>
+
+                    <div
+                        style="background: rgba(15, 23, 42, 0.9); border: 1px dashed var(--accent); padding: 25px; border-radius: 14px; margin-bottom: 20px;">
+                        <p
+                            style="color: var(--text-secondary); font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 8px;">
+                            BANK BCA</p>
+                        <span class="rek-num" style="display: block; margin: 10px 0;">3741244142</span>
+                        <p style="color: var(--text-primary); font-size: 1rem;">a.n. BIMA PUTRA SENA</p>
+                        <button class="copy-btn" onclick="copyRek()" style="margin-top: 15px;">
+                            <i class="fas fa-copy"></i> Salin No. Rekening
+                        </button>
+                    </div>
+
+                    <p
+                        style="color: var(--text-secondary); font-size: 0.85rem; font-style: italic; margin-bottom: 20px;">
+                        Jika sudah melakukan transfer, mohon konfirmasi melalui WhatsApp agar kami dapat mengetahui &
+                        mengucapkan terima kasih secara langsung.
+                    </p>
+
+                    <button class="btn-gold" onclick="showConfirmForm()" style="width: 100%;">
+                        <i class="fab fa-whatsapp"></i> Konfirmasi via WhatsApp
+                    </button>
                 </div>
-                <button id="payBtn" class="btn-duitku" onclick="payWithDuitku()">
-                    <i class="fas fa-credit-card"></i> Bayar Sekarang
-                </button>
-                <p class="payment-note">Pembayaran aman via QRIS, Transfer Bank, E-Wallet, dll.</p>
+
+                <!-- Step 2: Confirmation Form -->
+                <div id="confirmFormStep" style="display: none;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <i class="fab fa-whatsapp" style="font-size: 2rem; color: #25D366; margin-bottom: 10px;"></i>
+                        <p style="color: var(--text-secondary); font-size: 0.9rem;">Isi Form untuk Konfirmasi WA</p>
+                    </div>
+
+                    <div style="text-align: left;">
+                        <label class="amount-label" style="font-size: 0.85rem; margin-bottom: 8px;">Nama Pengirim
+                            *</label>
+                        <input type="text" id="giftName" class="amount-input" placeholder="Nama Anda"
+                            style="font-size: 1rem; padding: 12px; margin-bottom: 15px; text-align: left;" required>
+
+                        <label class="amount-label" style="font-size: 0.85rem; margin-bottom: 8px;">Pesan / Doa</label>
+                        <textarea id="giftMessage" class="amount-input"
+                            placeholder="Tulis doa atau ucapan untuk pengantin..."
+                            style="font-size: 1rem; padding: 12px; height: 100px; text-align: left; resize: none; border-radius: 12px;"></textarea>
+                    </div>
+
+                    <button id="submitBtn" class="btn-gold" onclick="submitTransferToWA()"
+                        style="width: 100%; margin-top: 20px; background: #25D366; border-color: #25D366; color: white;">
+                        <i class="fab fa-whatsapp"></i> Kirim ke WhatsApp Bima
+                    </button>
+
+                    <p
+                        style="color: var(--text-secondary); font-size: 0.8rem; font-style: italic; margin-top: 15px; text-align: center;">
+                        Anda akan diarahkan ke aplikasi WhatsApp setelah menekan tombol di atas.
+                    </p>
+                </div>
+
+                <!-- Step 3: Success Message (Redirect Info) -->
+                <div id="successStep" style="display: none; text-align: center;">
+                    <div style="font-size: 3rem; margin-bottom: 20px; color: #25D366;"><i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3 style="color: var(--accent); font-family: 'Cinzel', serif; margin-bottom: 15px;">Mengarahkan...
+                    </h3>
+                    <p style="color: var(--text-primary); font-size: 1rem; line-height: 1.7;" id="successMessage">
+                        Terima kasih. Membuka WhatsApp...
+                    </p>
+                </div>
             </div>
 
             <!-- Buttons Dynamic -->
@@ -1240,6 +1638,67 @@
                 },
                 y: Math.PI * 0.5
             });
+
+            // --- SIDE FRAME ANIMATION (DRAW & PARALLAX) ---
+            // --- SIDE FRAME ANIMATION (DRAW & PARALLAX) ---
+            const svgFrames = document.querySelectorAll('.svg-frame');
+            const vinePaths = document.querySelectorAll('.vine-path');
+
+            // 1. Prepare Paths (Reset before showing)
+            vinePaths.forEach(path => {
+                // Force a reflow just in case
+                const _ = path.getBoundingClientRect();
+                const length = path.getTotalLength() || 1500; // Fallback 1500 if calc fails
+
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = length; // Start fully hidden
+            });
+
+            // 2. Show Frames
+            svgFrames.forEach(f => {
+                f.style.visibility = 'visible';
+                setTimeout(() => f.style.opacity = '1', 100);
+            });
+
+            // 3. Animate Stroke (Draw)
+            gsap.to(vinePaths, {
+                strokeDashoffset: 0,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#main-content", // Trigger based on content scroll
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1
+                }
+            });
+
+            // 3. Vertical Parallax Movement
+            // Shift the SVG local coordinate system slightly opposite to scroll or with it
+            gsap.fromTo("#frame-left svg",
+                { y: -50 },
+                {
+                    y: 50,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "body",
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1
+                    }
+                });
+
+            gsap.fromTo("#frame-right svg",
+                { y: 50 },
+                {
+                    y: -50,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "body",
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: 1
+                    }
+                });
         }
 
         // =============================================
@@ -1332,6 +1791,12 @@
                 mText.innerText = "MasyaAllah... Jika memang Bapak/Ibu/Teman-teman berniat tulus dan memaksa, semoga Allah mengganti dengan rezeki yang berlimpah.";
 
                 paymentInput.style.display = 'block';
+                // Reset to bank details step
+                document.getElementById('bankDetailsStep').style.display = 'block';
+                document.getElementById('confirmFormStep').style.display = 'none';
+                document.getElementById('successStep').style.display = 'none';
+                document.getElementById('giftName').value = '';
+                document.getElementById('giftMessage').value = '';
                 document.getElementById('giftAmount').value = '';
 
                 createBtn("Tutup", "closeModal()", "btn-secondary");
@@ -1364,136 +1829,221 @@
         }
 
         // =============================================
-        // DUITKU PAYMENT FUNCTIONS
+        // MANUAL BANK TRANSFER FUNCTIONS
         // =============================================
-        function formatAmount(input) {
-            // Remove non-numeric characters
-            let value = input.value.replace(/\D/g, '');
+        function showConfirmForm() {
+            // Hide bank details step
+            document.getElementById('bankDetailsStep').style.display = 'none';
+            // Show confirmation form step
+            document.getElementById('confirmFormStep').style.display = 'block';
 
-            // Format with thousand separators
-            if (value) {
-                value = parseInt(value).toLocaleString('id-ID');
-                input.value = 'Rp ' + value;
-            } else {
-                input.value = '';
+            // Animate the transition
+            gsap.from('#confirmFormStep', {
+                opacity: 0,
+                y: 20,
+                duration: 0.4,
+                ease: 'power2.out'
+            });
+        }
+
+        function resetTransferForm() {
+            // Reset to initial state
+            document.getElementById('bankDetailsStep').style.display = 'block';
+            document.getElementById('confirmFormStep').style.display = 'none';
+            document.getElementById('successStep').style.display = 'none';
+            document.getElementById('giftName').value = '';
+            document.getElementById('giftMessage').value = '';
+        }
+
+
+        // =============================================
+        // GUESTBOOK LOGIC (API-BASED)
+        // =============================================
+
+        let wishesData = []; // Store fetched wishes
+
+        // Fetch wishes from API
+        async function fetchWishes() {
+            try {
+                const response = await fetch('api/wishes.php');
+                const data = await response.json();
+
+                if (data.success && data.wishes) {
+                    wishesData = data.wishes;
+                    renderWishes();
+                }
+            } catch (error) {
+                console.error('Error fetching wishes:', error);
+                // Fallback to empty state
+                renderWishes();
             }
         }
 
-        function setAmount(amount) {
-            const input = document.getElementById('giftAmount');
-            input.value = 'Rp ' + amount.toLocaleString('id-ID');
+        // Format relative time (e.g., "5 menit lalu")
+        function timeAgo(dateString) {
+            const now = new Date();
+            const past = new Date(dateString);
+            const diffMs = now - past;
+            const diffSec = Math.floor(diffMs / 1000);
+            const diffMin = Math.floor(diffSec / 60);
+            const diffHour = Math.floor(diffMin / 60);
+            const diffDay = Math.floor(diffHour / 24);
+            const diffWeek = Math.floor(diffDay / 7);
+            const diffMonth = Math.floor(diffDay / 30);
+
+            if (diffSec < 60) return 'Baru saja';
+            if (diffMin < 60) return `${diffMin} menit lalu`;
+            if (diffHour < 24) return `${diffHour} jam lalu`;
+            if (diffDay < 7) return `${diffDay} hari lalu`;
+            if (diffWeek < 4) return `${diffWeek} minggu lalu`;
+            if (diffMonth < 12) return `${diffMonth} bulan lalu`;
+            return past.toLocaleDateString('id-ID');
         }
 
-        function getNumericAmount() {
-            const input = document.getElementById('giftAmount');
-            return parseInt(input.value.replace(/\D/g, '')) || 0;
-        }
+        // Render wishes to the feed
+        function renderWishes() {
+            const feed = document.getElementById('wishesFeed');
+            if (!feed) return;
 
-        async function payWithDuitku() {
-            const amount = getNumericAmount();
-            const payBtn = document.getElementById('payBtn');
+            feed.innerHTML = ''; // Clear existing
 
-            if (amount < 10000) {
-                alert('Minimal nominal adalah Rp 10.000');
+            if (wishesData.length === 0) {
+                feed.innerHTML = '<div style="text-align:center; padding:40px; color:rgba(148, 163, 184, 0.5); font-style:italic;">Jadilah yang pertama menuliskan doa.</div>';
                 return;
             }
 
-            // Disable button and show loading
-            payBtn.disabled = true;
-            payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+            // Duplicate array for seamless looping animation
+            const displayData = [...wishesData, ...wishesData];
+
+            displayData.forEach(wish => {
+                const item = document.createElement('div');
+                item.className = 'wish-item';
+
+                const initial = wish.name.charAt(0).toUpperCase();
+                const relativeTime = wish.created_at ? timeAgo(wish.created_at) : '';
+
+                item.innerHTML = `
+                    <div class="wish-item-avatar">${initial}</div>
+                    <div class="wish-item-content">
+                        <div class="wish-item-name">${wish.name} <span style="font-weight:400; font-size:0.75rem; color:rgba(148,163,184,0.6); margin-left:8px;">${relativeTime}</span></div>
+                        <div class="wish-item-message">"${wish.message}"</div>
+                    </div>
+                `;
+                feed.appendChild(item);
+            });
+        }
+
+        // Submit new wish to API
+        async function submitWish() {
+            const nameInput = document.getElementById('wishName');
+            const msgInput = document.getElementById('wishMessage');
+            const btn = document.getElementById('btnSubmitWish');
+
+            const name = nameInput.value.trim();
+            const message = msgInput.value.trim();
+
+            if (!name || !message) {
+                alert("Mohon isi nama dan pesan doa Anda.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'MENGIRIM...';
 
             try {
-                const response = await fetch('api/payment.php', {
+                const response = await fetch('api/wishes.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        amount: amount,
-                        name: 'Tamu Undangan'
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, message })
                 });
 
                 const data = await response.json();
 
-                if (data.success && data.paymentUrl) {
-                    // Open Duitku payment page in new tab/popup
-                    window.open(data.paymentUrl, '_blank', 'width=500,height=700,scrollbars=yes');
+                if (data.success) {
+                    // Clear form
+                    nameInput.value = '';
+                    msgInput.value = '';
 
-                    // Update UI
-                    mTitle.innerText = "Menunggu Pembayaran";
-                    mText.innerText = `Silakan selesaikan pembayaran sebesar Rp ${amount.toLocaleString('id-ID')} di halaman yang baru terbuka. Setelah selesai, Anda dapat menutup pop-up ini.`;
-                    document.getElementById('paymentInput').style.display = 'none';
+                    // Refresh feed
+                    await fetchWishes();
 
-                    // Show WA confirm button
-                    waConfirmBtn.style.display = 'flex';
-                    waConfirmBtn.style.justifyContent = 'center';
-                    waConfirmBtn.style.alignItems = 'center';
-                    waConfirmBtn.style.gap = '8px';
-                    waConfirmBtn.href = `https://wa.me/6285179595302?text=Assalamualaikum%20Bima,%20saya%20sudah%20kirim%20tanda%20kasih%20sebesar%20Rp%20${amount.toLocaleString('id-ID')}.%20Semoga%20berkah%20untuk%20pernikahannya%20di%20Iran!`;
+                    btn.textContent = 'TERKIRIM!';
+                    setTimeout(() => {
+                        btn.disabled = false;
+                        btn.textContent = 'KIRIM DOA';
+                    }, 1500);
                 } else {
-                    throw new Error(data.message || 'Gagal membuat pembayaran');
+                    throw new Error(data.message);
                 }
             } catch (error) {
-                console.error('Payment error:', error);
-                alert('Gagal memproses pembayaran: ' + error.message);
-            } finally {
-                // Re-enable button
-                payBtn.disabled = false;
-                payBtn.innerHTML = '<i class="fas fa-credit-card"></i> Bayar Sekarang';
+                console.error('Error submitting wish:', error);
+                alert("Gagal mengirim doa, silakan coba lagi.");
+                btn.disabled = false;
+                btn.textContent = 'KIRIM DOA';
             }
         }
 
-        // =============================================
-        // DONATION FEED LOGIC
-        // =============================================
-        async function fetchDonations() {
-            try {
-                const response = await fetch('api/get_donations.php');
-                const data = await response.json();
+        // Initial fetch on page load
+        fetchWishes();
 
-                if (data.donations && data.donations.length > 0) {
-                    const list = document.getElementById('donor-list');
-                    const feed = document.getElementById('donation-feed');
-                    list.innerHTML = ''; // Clear prev content
-                    feed.style.display = 'block';
+        // Toggle Gift Section visibility
+        function toggleGiftSection() {
+            const section = document.getElementById('giftSection');
+            const btn = document.getElementById('revealGiftBtn');
 
-                    data.donations.forEach(d => {
-                        const item = document.createElement('div');
-                        item.className = 'donor-item';
-                        item.style.cssText = `
-                            background: rgba(255, 255, 255, 0.03);
-                            padding: 10px 20px;
-                            border-radius: 20px;
-                            border: 1px solid rgba(212, 163, 115, 0.2);
-                            font-size: 0.85rem;
-                            color: var(--text-secondary);
-                            display: flex;
-                            align-items: center;
-                            gap: 10px;
-                            animation: fadeIn 0.5s ease;
-                        `;
-                        // Format Name to Privacy (Bima P***) or Full Name
-                        const displayName = d.sender_name.length > 15 ? d.sender_name.substring(0, 12) + "..." : d.sender_name;
+            if (section.style.display === 'none' || section.style.display === '') {
+                // Show
+                section.style.display = 'flex';
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, 10);
+                btn.innerHTML = '<i class="fas fa-times" style="margin-right: 10px;"></i> Tutup';
 
-                        item.innerHTML = `
-                            <i class="fas fa-heart" style="color: var(--accent); font-size: 0.7rem;"></i>
-                            <span>${displayName}</span>
-                            <span style="opacity: 0.5;">•</span>
-                            <span style="color: var(--text-primary);">Rp ${parseInt(d.amount).toLocaleString('id-ID')}</span>
-                        `;
-                        list.appendChild(item);
-                    });
-                }
-            } catch (e) {
-                console.log("No donations yet or error fetching.");
+                // Scroll to the section
+                setTimeout(() => {
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            } else {
+                // Hide
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    section.style.display = 'none';
+                }, 500);
+                btn.innerHTML = '<i class="fas fa-gift" style="margin-right: 10px;"></i> Kirim Tanda Kasih';
             }
         }
 
-        // Auto refresh every 30 seconds
-        setInterval(fetchDonations, 30000);
-        // Initial fetch
-        fetchDonations();
+
+
+        // WhatsApp Confirmation Logic
+        function submitTransferToWA() {
+            const name = document.getElementById('giftName').value.trim();
+            const message = document.getElementById('giftMessage').value.trim();
+
+            if (!name) {
+                alert("Mohon isi nama Anda.");
+                return;
+            }
+
+            // Show loading / success state
+            document.getElementById('confirmFormStep').style.display = 'none';
+            document.getElementById('successStep').style.display = 'block';
+
+            // Construct WA Message
+            // Format: "Halo Bima, saya [Nama] sudah mengirim tanda kasih. Pesan: [Pesan]"
+            let waText = `Assalamualaikum Bima & Jasmine, saya *${name}* sudah mengirimkan tanda kasih.`;
+            if (message) {
+                waText += `%0A%0APesan/Doa: "${message}"`;
+            }
+            waText += `%0A%0ASemoga menjadi berkah. Terima kasih.`;
+
+            // Redirect delay
+            setTimeout(() => {
+                window.location.href = `https://wa.me/6285179595302?text=${waText}`;
+            }, 1500);
+        }
 
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
